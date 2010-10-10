@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Palaso.Lift</name>
+    </assembly>
+    <members>
+        <member name="M:Palaso.Lift.LiftDataMapper`1.MergeIncrementFiles">
+            <summary>
+            
+            </summary>
+            <returns>false if it failed (and it would have already reported the error)</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Palaso.Lift.LiftDataMapper`1.UnLockLift" -->
+        <member name="T:Palaso.Lift.FlagState">
+            <summary>
+            Holds a boolean value for, for example, a checkbox
+            </summary>
+        </member>
+        <member name="F:Palaso.Lift.FlagState._parent">
+            <summary>
+            This "backreference" is used to notify the parent of changes. 
+            IParentable gives access to this during explicit construction.
+            </summary>
+        </member>
+        <member name="E:Palaso.Lift.FlagState.PropertyChanged">
+            <summary>
+            For INotifyPropertyChanged
+            </summary>
+        </member>
+        <member name="T:Palaso.Lift.MultiText">
+            <summary>
+            MultiText holds an array of LanguageForms, indexed by writing system ID.  
+            </summary>
+        </member>
+        <member name="M:Palaso.Lift.MultiText.GetSchema">
+            <summary>
+             required by IXmlSerializable
+            </summary>
+        </member>
+        <member name="M:Palaso.Lift.MultiText.ReadXml(System.Xml.XmlReader)">
+            <summary>
+             required by IXmlSerializable.
+             This is wierd and sad, but this is tuned to the format we want in OptionLists.
+            </summary>
+        </member>
+        <member name="M:Palaso.Lift.MultiText.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+             required by IXmlSerializable.
+             This is wierd and sad, but this is tuned to the format we want in OptionLists.
+            </summary>
+        </member>
+        <member name="P:Palaso.Lift.MultiText.Parent">
+            <summary>
+            We added this pesky "backreference" solely to enable fast
+            searching in db4o (5.5), which could
+             find strings fast, but can't be queried for the owner
+            quickly, if there is an intervening collection.  Since
+            each string in WeSay is part of a collection of writing
+            system alternatives, that means we can't quickly get
+            an answer, for example, to the question Get all
+            the Entries that contain a senses which have the reversal "cat". 
+            
+            NOW (2009) it is a TODO to look at removing this.
+            
+            Using this field, we can do a query asking for all
+            the LanguageForms matching "cat".
+            This can all be done in a single, fast query.
+             In code, we can then follow the 
+            LanguageForm._parent up to the multitext, then this _parent
+            up to it's owner, etc., on up the hierarchy to get the Entries.
+             
+            Subclasses should provide a property which set the proper class.
+            
+            23 Jan 07, note: starting to switch to using these for notifying parent of changes, too.
+            </summary>
+        </member>
+        <member name="P:Palaso.Lift.MultiText.ParentAsObject">
+            <summary>
+            Subclasses should provide a "Parent" property which set the proper class.
+            </summary>
+        </member>
+        <member name="T:Palaso.Lift.Options.OptionRefCollection">
+            <summary>
+            Used to refer to this option from a field
+            </summary>
+        </member>
+        <member name="F:Palaso.Lift.Options.OptionRefCollection._whomToNotify">
+            <summary>
+            This "backreference" is used to notify the parent of changes. 
+            IParentable gives access to this during explicit construction.
+            </summary>
+        </member>
+        <member name="M:Palaso.Lift.Options.OptionRefCollection.Remove(System.String)">
+            <summary>
+            Removes a key from the OptionRefCollection
+            </summary>
+            <param name="key">The OptionRef key to be removed</param>
+            <returns>true when removed, false when doesn't already exists in collection</returns>
+        </member>
+        <member name="M:Palaso.Lift.Options.OptionRefCollection.Add(System.String)">
+            <summary>
+            Adds a key to the OptionRefCollection
+            </summary>
+            <param name="key">The OptionRef key to be added</param>
+            <returns>true when added, false when already exists in collection</returns>
+        </member>
+        <member name="M:Palaso.Lift.Options.OptionRefCollection.AddRange(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Adds a set of keys to the OptionRefCollection
+            </summary>
+            <param name="keys">A set of keys to be added</param>
+        </member>
+        <member name="E:Palaso.Lift.Options.OptionRefCollection.PropertyChanged">
+            <summary>
+            For INotifyPropertyChanged
+            </summary>
+        </member>
+        <member name="F:Palaso.Lift.PalasoDataObject._parent">
+            <summary>
+            see comment on _parent field of MultiText for an explanation of this field
+            </summary>
+        </member>
+        <member name="M:Palaso.Lift.PalasoDataObject.FinishActivation">
+            <summary>
+            Do the non-db40-specific parts of becoming activated
+            </summary>
+        </member>
+        <member name="M:Palaso.Lift.PalasoDataObject.SomethingWasModified(System.String)">
+            <summary>
+            called by the binding list when senses are added, removed, reordered, etc.
+            Also called when the user types in fields, etc.
+            </summary>
+            <remarks>The only side effect of this should be to update the dateModified fields</remarks>
+        </member>
+        <member name="M:Palaso.Lift.PalasoDataObject.RemoveEmptyProperties">
+            <summary>
+            BE CAREFUL about when this is called. Empty properties *should exist*
+            as long as the record is being editted
+            </summary>
+        </member>
+        <member name="M:Palaso.Lift.PalasoDataObject.GetProperty``1(System.String)">
+            <summary>
+            Will return null if not found
+            </summary>
+            <typeparam name="TContents"></typeparam>
+            <returns>null if not found</returns>
+        </member>
+        <member name="M:Palaso.Lift.PalasoDataObject.SetFlag(System.String)">
+             <summary>
+             
+             </summary>
+            <remarks>Seting a flag is represented by creating a property and giving it a "set"
+             value, though that is not really meaningful (there are no other possible values).</remarks>
+             <param name="propertyName"></param>
+        </member>
+        <member name="M:Palaso.Lift.PalasoDataObject.ClearFlag(System.String)">
+            <summary>
+            
+            </summary>
+            <remarks>Clearing a flag is represented by just removing the property, if it exists</remarks>
+            <param name="propertyName"></param>
+        </member>
+        <member name="P:Palaso.Lift.PalasoDataObject.Parent">
+            <summary>
+            see comment on _parent field of MultiText for an explanation of this field
+            </summary>
+        </member>
+        <member name="E:Palaso.Lift.PalasoDataObject.PropertyChanged">
+            <summary>
+            For INotifyPropertyChanged
+            </summary>
+        </member>
+        <member name="T:Palaso.Lift.ListEventHelper">
+            <summary>
+            This class enables creating the necessary event subscriptions. It was added
+            before we were forced to add "parent" fields to everything.  I could probably
+            be removed now, since that field could be used by children to cause the wiring,
+            but we are hoping that the parent field might go away with future version of db4o.
+            </summary>
+        </member>
+        <member name="T:Palaso.Lift.Options.OptionsList">
+            <summary>
+            This is like a PossibilityList in FieldWorks, or RangeSet in Toolbox
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Palaso.Lift.Options.OptionsList.options" -->
+        <member name="T:Palaso.Lift.Options.OptionsListWrapper">
+            <summary>
+            Just makes the xml serialization work right
+            </summary>
+        </member>
+        <member name="T:Palaso.Lift.Options.Option.OptionDisplayProxy">
+            <summary>
+            Gives a monolingual representation of the object for use by a combo-box
+            </summary>
+        </member>
+        <member name="F:Palaso.Lift.PictureRef._parent">
+            <summary>
+            This "backreference" is used to notify the parent of changes. 
+            IParentable gives access to this during explicit construction.
+            </summary>
+        </member>
+        <member name="E:Palaso.Lift.PictureRef.PropertyChanged">
+            <summary>
+            For INotifyPropertyChanged
+            </summary>
+        </member>
+        <member name="T:Palaso.Lift.Options.OptionRef">
+            <summary>
+            Used to refer to this option from a field. 
+            This class just wraps the key, which is a string, with various methods to make it fit in
+            with the system.
+            </summary>
+        </member>
+        <member name="F:Palaso.Lift.Options.OptionRef._parent">
+            <summary>
+            This "backreference" is used to notify the parent of changes. 
+            IParentable gives access to this during explicit construction.
+            </summary>
+        </member>
+        <member name="E:Palaso.Lift.Options.OptionRef.PropertyChanged">
+            <summary>
+            For INotifyPropertyChanged
+            </summary>
+        </member>
+    </members>
+</doc>
