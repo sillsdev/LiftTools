@@ -1,4 +1,5 @@
-﻿using Palaso.Progress.LogBox;
+﻿using System;
+using Palaso.Progress.LogBox;
 
 namespace LiftTools.Tools
 {
@@ -11,9 +12,22 @@ namespace LiftTools.Tools
 
         public override void Run(string inputLiftPath, string outputLiftPath, IProgress progress)
         {
-            progress.WriteMessage("Checking..."); 
-            progress.WriteMessage(LiftIO.Validation.Validator.GetAnyValidationErrors(inputLiftPath));
-            progress.WriteMessage("Done");
+            progress.WriteMessage("Checking...");
+            var errors = LiftIO.Validation.Validator.GetAnyValidationErrors(inputLiftPath);
+            if(string.IsNullOrEmpty(errors))
+            {
+                progress.WriteMessage("No Errors found.");
+            }
+            else
+            {
+                progress.WriteMessageWithColor("red",errors);                
+                progress.WriteMessage("Done");
+            }
+        }
+
+        public override string InfoPageName
+        {
+            get { return "Validator.htm"; }
         }
     }
 }

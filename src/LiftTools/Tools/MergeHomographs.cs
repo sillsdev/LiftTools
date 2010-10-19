@@ -29,12 +29,36 @@ namespace LiftTools.Tools
                 Palaso.DictionaryServices.Processors.HomographMerger.Merge(repo, writingSystemForMatching, progress);
                 progress.WriteMessage("Ended with {0} entries...", repo.Count);
             }
+            progress.WriteMessageWithColor("blue", "The processed lift is at " + outputLiftPath);
+
+            ValidateFile(progress, outputLiftPath);
         }
 
-  
+        private void ValidateFile(IProgress progress, string path)
+        {
+            progress.WriteMessage(""); 
+            progress.WriteMessage("Validating the processed file...");
+            var errors = LiftIO.Validation.Validator.GetAnyValidationErrors(path);
+            if (string.IsNullOrEmpty(errors))
+            {
+                progress.WriteMessage("No Errors found.");
+            }
+            else
+            {
+                progress.WriteMessageWithColor("red", errors);
+                progress.WriteMessage("Done");
+            }
+        }
+
+
         public override string ToString()
         {
             return "Merge Homographs";
         }
+        public override string InfoPageName
+        {
+            get { return "MergeHomographs.htm"; }
+        }
+
     }
 }

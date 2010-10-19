@@ -1,4 +1,6 @@
-﻿namespace LiftTools.Tools
+﻿using System;
+
+namespace LiftTools.Tools
 {
     /// <summary>
     /// Tools are things which process a dictionary.  They are all exposed via the "Lift Tools"
@@ -8,5 +10,7 @@
     public abstract class Tool
     {
         public abstract void Run(string inputLiftPath, string outputLiftPath, Palaso.Progress.LogBox.IProgress progress);
+
+        public abstract string InfoPageName { get; }
     }
 }
