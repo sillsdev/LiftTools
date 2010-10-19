@@ -4,6 +4,12 @@
         <name>Palaso.Lift</name>
     </assembly>
     <members>
+        <member name="M:Palaso.Lift.LiftDataMapper`1.CustomizeReader(Palaso.Lift.ILiftReader{`0})">
+            <summary>
+            for subclasses
+            </summary>
+            <param name="reader"></param>
+        </member>
         <member name="M:Palaso.Lift.LiftDataMapper`1.MergeIncrementFiles">
             <summary>
             
@@ -145,6 +151,11 @@
             <typeparam name="TContents"></typeparam>
             <returns>null if not found</returns>
         </member>
+        <member name="M:Palaso.Lift.PalasoDataObject.CopyProperty(System.Collections.Generic.KeyValuePair{System.String,System.Object})">
+            <summary>
+            Copy a property from some other object, e.g., when merging senses
+            </summary>
+        </member>
         <member name="M:Palaso.Lift.PalasoDataObject.SetFlag(System.String)">
              <summary>
              
@@ -203,6 +214,12 @@
         <member name="E:Palaso.Lift.PictureRef.PropertyChanged">
             <summary>
             For INotifyPropertyChanged
+            </summary>
+        </member>
+        <member name="E:Palaso.Lift.ILiftReader`1.AfterEntryRead">
+            <summary>
+            Subscribe to this event in order to do something (or do something to an entry) as soon as it has been parsed in.
+            WeSay uses this to populate definitions from glosses.
             </summary>
         </member>
         <member name="T:Palaso.Lift.Options.OptionRef">

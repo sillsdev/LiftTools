@@ -9,6 +9,11 @@ copy /Y ..\palaso\output\debug\Palaso.Lift.dll lib
 copy /Y ..\palaso\output\debug\Palaso.Lift.xml lib
 copy /Y ..\palaso\output\debug\Palaso.Lift.pdb lib
 
+copy /Y ..\palaso\output\debug\Palaso.DictionaryServices.dll lib
+copy /Y ..\palaso\output\debug\Palaso.DictionaryServices.xml lib
+copy /Y ..\palaso\output\debug\Palaso.DictionaryServices.pdb lib
+
+
 copy /Y ..\palaso\output\debug\Palaso.TestUtilities.* lib
 
 REM copy /Y ..\palaso\output\debug\Palaso.BuildTasks.dll build

@@ -35,6 +35,7 @@
             this._runToolButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this._liftPathDisplay = new System.Windows.Forms.TextBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this._logBox = new Palaso.Progress.LogBox.LogBox();
             this.SuspendLayout();
             // 
@@ -60,12 +61,11 @@
             // 
             // _toolChooser
             // 
-            this._toolChooser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._toolChooser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this._toolChooser.FormattingEnabled = true;
             this._toolChooser.Location = new System.Drawing.Point(92, 56);
             this._toolChooser.Name = "_toolChooser";
-            this._toolChooser.Size = new System.Drawing.Size(124, 21);
+            this._toolChooser.Size = new System.Drawing.Size(241, 21);
             this._toolChooser.TabIndex = 2;
             // 
             // _runToolButton
@@ -105,6 +105,7 @@
             this._logBox.BackColor = System.Drawing.Color.Transparent;
             this._logBox.CancelRequested = false;
             this._logBox.ErrorEncountered = false;
+            this._logBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._logBox.GetDiagnosticsMethod = null;
             this._logBox.Location = new System.Drawing.Point(25, 117);
             this._logBox.Name = "_logBox";
@@ -140,6 +141,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox _liftPathDisplay;
         private Palaso.Progress.LogBox.LogBox _logBox;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using LiftTools.Properties;
+using LiftTools.Tools;
+using Palaso.Reporting;
 
 namespace LiftTools
 {
@@ -16,8 +18,19 @@ namespace LiftTools
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Shell(new List<Tool>(new []{new Validator()})));
+            SetupErrorHandling();
+            Application.Run(new Shell(new List<Tool>(new Tool[]{new MergeHomographs(), new Validator()})));
             Settings.Default.Save();
         }
+
+        private static void SetupErrorHandling()
+        {
+            ErrorReport.EmailAddress = "hide@gmail.org".Replace("hide","hattonjohn");
+            ErrorReport.AddStandardProperties();
+            ExceptionHandler.Init();
+
+            UsageReporter.ReportLaunchesAsync();
+        }
+
     }
 }
