@@ -10,6 +10,7 @@ using System.Text;
 using System.Windows.Forms;
 using LiftTools.Properties;
 using LiftTools.Tools;
+using Palaso.IO;
 
 namespace LiftTools
 {
@@ -32,8 +33,14 @@ namespace LiftTools
                 _toolChooser.SelectedIndex = 0;
             }
             backgroundWorker1.DoWork += new DoWorkEventHandler(backgroundWorker1_DoWork);
+            backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorker1_RunWorkerCompleted);
 
             SetWindowText();
+        }
+
+        void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            UpdateDisplay();
         }
 
 
@@ -56,10 +63,15 @@ namespace LiftTools
             }
         }
 
+        private void UpdateDisplay()
+        {
+            _liftPathDisplay.Enabled = _toolChooser.Enabled = _runToolButton.Enabled = !backgroundWorker1.IsBusy;
+        }
+
         private void _runToolButton_Click(object sender, EventArgs e)
         {
-            _currentTool = ((Tool)_toolChooser.SelectedItem);
             _logBox.Clear();
+            tabControl1.SelectedTab = _logPage;
             backgroundWorker1.RunWorkerAsync();
         }
 
@@ -69,12 +81,24 @@ namespace LiftTools
             try
             {
                 _currentTool.Run(_liftPathDisplay.Text, processedFile, _logBox);
-                _logBox.WriteMessage("The processed lift is at " + processedFile);
+               
             }
             catch (Exception error)
             {
                 _logBox.WriteException(error);
             }    
+        }
+
+        private void _toolChooser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _currentTool = ((Tool)_toolChooser.SelectedItem);
+            tabControl1.SelectedTab = _infoPage;
+            _infoBrowser.Navigate(FileLocator.GetFileDistributedWithApplication(_currentTool.InfoPageName));
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            UpdateDisplay();
         }
     }
 }
