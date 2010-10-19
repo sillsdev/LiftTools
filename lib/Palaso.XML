@@ -485,6 +485,21 @@
             <param name="orderedListOfWritingSystemIds"></param>
             <returns>May return null!</returns>
         </member>
+        <member name="M:Palaso.Text.MultiTextBase.TryMergeIn(Palaso.Text.MultiTextBase)">
+            <summary>
+            Will merge the two mt's if they are compatible; if they collide anywhere, leaves the original untouched 
+            and returns false
+            </summary>
+            <param name="incoming"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Palaso.Text.MultiTextBase.CanBeUnifiedWith(Palaso.Text.MultiTextBase)">
+            <summary>
+            False if they have different forms on any single writing system. If true, they can be safely merged.
+            </summary>
+            <param name="incoming"></param>
+            <returns></returns>
+        </member>
         <member name="E:Palaso.Text.MultiTextBase.PropertyChanged">
             <summary>
             For INotifyPropertyChanged
@@ -1700,6 +1715,22 @@
             current scanner
             </summary>
         </member>
+        <member name="T:Palaso.Progress.LogBox.LogBoxResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Palaso.Progress.LogBox.LogBoxResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Palaso.Progress.LogBox.LogBoxResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
         <member name="M:Palaso.WritingSystems.Collation.SimpleRulesCollator.Compare(System.String,System.String)">
             <summary>Compares two strings and returns a value indicating whether one is less than, 
              equal to, or greater than the other.</summary>
@@ -1934,6 +1965,11 @@
         <member name="P:Palaso.WritingSystems.WritingSystemDefinition.Variant">
             <summary>
             Todo: this could/should become an ordered list of variant tags
+            </summary>
+        </member>
+        <member name="P:Palaso.WritingSystems.WritingSystemDefinition.ISO">
+            <summary>
+            The ISO-639 code which is also the Ethnologue code.
             </summary>
         </member>
         <member name="P:Palaso.WritingSystems.WritingSystemDefinition.StoreID">
@@ -2385,6 +2421,17 @@
             this is for interacting with test code which doesn't want to allow an actual UI
             </summary>
         </member>
+        <member name="M:Palaso.Progress.LogBox.ConsoleProgress.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:Palaso.Progress.LogBox.LabelStatus">
+            <summary>
+            Just conveys status, not all messages
+            </summary>
+        </member>
         <member name="M:Palaso.IO.FileLocator.GetFileDistributedWithApplication(System.String[])">
             <summary>
             Find a file which, on a development machine, lives in [solution]/[distFileFolderName]/[subPath],
@@ -2704,6 +2751,29 @@
         <member name="M:Palaso.Reporting.ErrorReportTests.TestSend">
             <summary>
             
+            </summary>
+        </member>
+        <member name="F:Palaso.Progress.LogBox.LogBox.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Palaso.Progress.LogBox.LogBox.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Palaso.Progress.LogBox.LogBox.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Palaso.Progress.LogBox.LogBox.GetDiagnosticsMethod">
+            <summary>
+            This is a callback the client can set to soemthing which will then generate
+            Write() calls.  If it is set, the user sees a "Run diagnostics" menu item.
             </summary>
         </member>
         <member name="T:Palaso.Progress.InitializeProgressCallback">
@@ -3174,56 +3244,6 @@
             Call this method every time a cached item changes. This method verifies that the item you are trying to update exists int he repository.
             </summary>
             <param name="item"></param>
-        </member>
-        <member name="M:Palaso.Progress.LogBox.ConsoleProgress.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-            <filterpriority>2</filterpriority>
-        </member>
-        <member name="T:Palaso.Progress.LogBox.LabelStatus">
-            <summary>
-            Just conveys status, not all messages
-            </summary>
-        </member>
-        <member name="F:Palaso.Progress.LogBox.LogBox.components">
-            <summary> 
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:Palaso.Progress.LogBox.LogBox.Dispose(System.Boolean)">
-            <summary> 
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:Palaso.Progress.LogBox.LogBox.InitializeComponent">
-            <summary> 
-            Required method for Designer support - do not modify 
-            the contents of this method with the code editor.
-            </summary>
-        </member>
-        <member name="P:Palaso.Progress.LogBox.LogBox.GetDiagnosticsMethod">
-            <summary>
-            This is a callback the client can set to soemthing which will then generate
-            Write() calls.  If it is set, the user sees a "Run diagnostics" menu item.
-            </summary>
-        </member>
-        <member name="T:Palaso.Progress.LogBox.LogBoxResources">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:Palaso.Progress.LogBox.LogBoxResources.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:Palaso.Progress.LogBox.LogBoxResources.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
         </member>
     </members>
 </doc>
