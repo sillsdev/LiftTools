@@ -65,7 +65,8 @@ namespace LiftTools
 
         private void UpdateDisplay()
         {
-            _liftPathDisplay.Enabled = _toolChooser.Enabled = _runToolButton.Enabled = !backgroundWorker1.IsBusy;
+            _toolChooser.Enabled = _liftPathDisplay.Enabled = !backgroundWorker1.IsBusy;
+            _runToolButton.Enabled = !backgroundWorker1.IsBusy && File.Exists(_liftPathDisplay.Text);
         }
 
         private void _runToolButton_Click(object sender, EventArgs e)
