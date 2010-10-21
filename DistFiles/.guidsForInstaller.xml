@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--This file is generated and then updated by an MSBuild task.  It preserves the automatically-generated guids assigned files that will be installed on user machines. So it should be held in source control.-->
+<InstallerMetadata>
+  <File Id="about.htm" Guid="78287279-81fe-448d-b81d-50347b349eba" />
+  <File Id="license.rtf" Guid="c776f7a7-5d85-41f5-b769-8fbde614691f" />
+  <File Id="LogoForAbout.png" Guid="7139797c-799a-4672-97ad-dbd35f7f2945" />
+  <File Id="MergeHomographs.htm" Guid="60a94347-19f0-4865-97dc-bc26e180e361" />
+  <File Id="Validator.htm" Guid="4b262784-8338-44f1-bbda-a55ec2077d91" />
+</InstallerMetadata>
