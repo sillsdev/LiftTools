@@ -1,0 +1,7 @@
+glob:*ReSharper*
+glob:*.suo
+glob:output\
+glob:src/LiftTools/obj/
+glob:*.pdb
+glob:src/LiftTools/bin/Debug/LiftTools.vshost.exe.manifest
+glob:*.user
