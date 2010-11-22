@@ -24,7 +24,7 @@
     <Message Text="Version: $(Version)" Importance="high"/>
   </Target>
     
-  <Target Name="SetAssemblyVersion">
+  <Target Name="SetAssemblyVersion" DependsOnTargets="VersionNumbers">
       <ItemGroup>
         <AssemblyInfoFiles Include="$(teamcity_build_checkoutDir)/src/**/assemblyinfo.cs"/>
       </ItemGroup>
