@@ -97,6 +97,19 @@ are trying to support, you're better off using non-advertised shortcuts. "-->
             <File Id="Palaso.dll" Name="Palaso.dll" KeyPath="yes" Source="..\..\output\release\Palaso.dll" />
           </Component>
 
+          <Component Id="Icu.Net.dll" Guid="{5750DD1D-F389-4138-9DEB-9CCC6C7720FE}">
+            <File Id="Icu.Net.dll" Name="icu.net.dll" KeyPath="yes" Source="..\..\lib\icu.net.dll" />
+          </Component>
+          <Component Id="icudt40.dll" Guid="{5750DD1D-F389-4138-9DEB-9CCC6C7720F1}">
+            <File Id="icudt40.dll" Name="icudt40.dll" KeyPath="yes" Source="..\..\lib\icudt40.dll" />
+          </Component>
+          <Component Id="icuin40.dll" Guid="{5750DD1D-F389-4138-9DEB-9CCC6C7720F2}">
+            <File Id="icuin40.dll" Name="icuin40.dll" KeyPath="yes" Source="..\..\lib\icuin40.dll" />
+          </Component>
+          <Component Id="icuuc40.dll" Guid="{5750DD1D-F389-4138-9DEB-9CCC6C7720F3}">
+            <File Id="icuuc40.dll" Name="icuuc40.dll" KeyPath="yes" Source="..\..\lib\icuuc40.dll" />
+          </Component>
+          
           <Component Id="Palaso.DictionaryServices.dll" Guid="{79EE8237-9614-4239-87A4-B2AF2CF7CD2C}">
             <File Id="Palaso.DictionaryServices.dll" Name="Palaso.DictionaryServices.dll" KeyPath="yes" Source="..\..\output\release\Palaso.DictionaryServices.dll" />
           </Component>
@@ -126,7 +139,11 @@ are trying to support, you're better off using non-advertised shortcuts. "-->
       <ComponentRef Id="LiftIO.dll"/>
       <ComponentRef Id="Commons.Xml.Relaxng.dll" />
 
-      
+      <ComponentRef Id="Icu.Net.dll"/>
+      <ComponentRef Id="icudt40.dll"/>
+      <ComponentRef Id="icuin40.dll"/>
+      <ComponentRef Id="icuuc40.dll"/>
+
       <ComponentGroupRef Id ="DistFiles"/>
  
     </Feature>

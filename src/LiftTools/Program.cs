@@ -29,7 +29,7 @@ namespace LiftTools
             ErrorReport.AddStandardProperties();
             ExceptionHandler.Init();
 
-            UsageReporter.ReportLaunchesAsync();
+            //we don't have a google analytics yet. UsageReporter.Init();
         }
 
     }
