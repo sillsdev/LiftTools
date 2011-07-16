@@ -22,7 +22,11 @@ namespace LiftTools.Tools
             {
 
                 var writingSystemForMatching =   Palaso.DictionaryServices.Processors.HomographMerger.GuessPrimarLexicalFormWritingSystem(repo, progress);
-
+                if(writingSystemForMatching==null)
+                {
+                    progress.WriteError("Sorry, something's different about this dictionary... could not determine a primary writing system for lexical forms.  Does it even have lexical forms, in the first hundred or so words?");
+                    return;
+                }
                 progress.WriteMessage("");
                 progress.WriteMessage("Starting with {0} entries...", repo.Count);
                 progress.WriteMessage("");
