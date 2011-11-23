@@ -181,6 +181,24 @@
             used to break us out of the xslt transformer if the user cancels
             </summary>
         </member>
+        <member name="M:Palaso.Network.RobustNetworkOperation.Do(System.Action{System.Net.IWebProxy},System.Action{System.String})">
+            <summary>
+            Perform a web action, trying various things to use a proxy if needed, including requesting
+            (and remembering) user credentials from the user.
+            </summary>
+            <returns>the proxy information which was needed to complete the task, will THROW if it failed.</returns>
+        </member>
+        <member name="M:Palaso.Network.RobustNetworkOperation.ClearCredentialSettings">
+            <summary>
+            for testing
+            </summary>
+        </member>
+        <member name="M:Palaso.Network.RobustNetworkOperation.DoHttpGetAndGetProxyInfo(System.String,System.String@,System.String@,System.String@,System.Action{System.String})">
+            <summary>
+            Used by Chorus to get proxy name, user name, and password of the remote repository.
+            </summary>
+            <returns>true if a proxy is needed. THROWS if it just can't get through</returns>
+        </member>
         <member name="T:Palaso.Events.EventArgs`1">
             <summary>
             Generic version of EveryArgs, allow to avoid 
@@ -442,7 +460,7 @@
             This is class originally from  SeemabK (seemabk@yahoo.com).  It has been enhanced for chorus.
             </summary>
         </member>
-        <member name="M:Palaso.CommandLineProcessing.ProcessOutputReader.Read(System.Diagnostics.Process@,System.Int32,Palaso.CommandLineProcessing.IProgress)">
+        <member name="M:Palaso.CommandLineProcessing.ProcessOutputReader.Read(System.Diagnostics.Process@,System.Int32,Palaso.Progress.LogBox.IProgress)">
             <summary>
             Safely read the streams of the process
             </summary>
@@ -734,6 +752,11 @@
             The typed parse result
             </summary>
         </member>
+        <member name="T:Palaso.Migration.IMigrationStrategy">
+            <summary>
+             Used by Migrator to migrate from one version to another.
+            </summary>
+        </member>
         <member name="M:Palaso.Code.ReentryDetecter.AndThrow">
             <example>
               using (Detect.Reentry(this, "OnPropertyValueChanged").AndThrow())
@@ -748,6 +771,13 @@
                         return;
             </example>
         </member>
+        <member name="M:Palaso.WritingSystems.RFC5646Tag.#ctor(Palaso.WritingSystems.RFC5646Tag)">
+            <summary>
+             Copy constructor
+            </summary>
+            <param name="rhs"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Palaso.WritingSystems.RFC5646Tag.IsValid" -->
         <member name="F:Palaso.Text.ApproximateMatcherOptions.None">
             <summary>
             Find closest forms only
@@ -982,11 +1012,6 @@
             <param name="ex"></param>
             <returns></returns>
         </member>
-        <member name="M:Palaso.Reporting.UsageReporter.RecordLaunch">
-            <summary>
-            call this each time the application is launched
-            </summary>
-        </member>
         <member name="M:Palaso.Reporting.UsageReporter.MakeLaunchDateSafe">
             <summary>
             cover an apparent bug in the generated code when you do a get but the datetime is null
@@ -997,13 +1022,47 @@
             used for testing purposes
             </summary>
         </member>
-        <member name="M:Palaso.Reporting.UsageReporter.DoTrivialUsageReport(System.String,System.String,System.Int32[])">
+        <member name="M:Palaso.Reporting.UsageReporter.GetAllApplicationValuesForThisUser">
             <summary>
-            if you call this every time the application starts, it will send reports on those intervals
-            (e.g. {1, 10}) that are listed in the intervals parameter.  It will get version number and name out of the application.
+            store and retrieve values which are the same for all apps using this usage libary
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Palaso.Reporting.UsageReporter.BeginGoogleAnalytics(System.String,System.String)">
+            <summary>
+             Reports upgrades, launches, etc., and allows for later calls to notify analytics of navigation and events
             </summary>
         </member>
-        <member name="P:Palaso.Reporting.UsageReporter.AppReportingSettings">
+        <member name="M:Palaso.Reporting.UsageReporter.SendNavigationNotice(System.String,System.Object[])">
+            <summary>
+            Send an navigation notice to Google Analytics, if BeginGoogleAnalytics was previously called
+            Record a visit to part of the application, just as if it  were a page.
+            Leave it up to this method to insert things like the fact that you are in DEBUG mode, or what version is being used, etc.
+            </summary>
+            <example>SendNavigationNotice("aboutBox"), SendNavigationNotice("dictionary/browseView")</example>
+        </member>
+        <member name="M:Palaso.Reporting.UsageReporter.SendEvent(System.String,System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Send an event to Google Analytics, if BeginGoogleAnalytics was previously called
+            </summary>
+            <param name="programArea">DictionaryBrowse</param>
+            <param name="action">       DeleteWord                   Error</param>
+            <param name="optionalLabel">Some Exception Message</param>
+            <param name="optionalInteger">some integer that makes sense for this event</param>
+            <example>SendEvent("dictionary/browseView", "Command", "DeleteWord", "","")</example>
+            <example>SendEvent("dictionary/browseView", "Error", "DeleteWord", "some error message we got","")</example>
+        </member>
+        <member name="M:Palaso.Reporting.UsageReporter.ReportException(System.Boolean,System.String,System.Exception)">
+            <summary>
+            Send an error to Google Analytics, if BeginGoogleAnalytics was previously called
+            </summary>
+        </member>
+        <member name="P:Palaso.Reporting.UsageReporter.UserGuid">
+            <summary>
+            A unique guid for this machine, which is the same for all palaso apps (because we store it in special palaso text file in appdata)
+            </summary>
+        </member>
+        <member name="P:Palaso.Reporting.UsageReporter.AppNameToUseInDialogs">
             <summary>
             The deal here is, Cambell changed this so that it is the responsibility of
             the client to set this, and then save the settings.
@@ -1060,6 +1119,27 @@
             </remarks>
             ------------------------------------------------------------------------------------
         </member>
+        <member name="T:Palaso.Reporting.AnalyticsEventSender">
+            <summary>
+            For information on what's going on here, google "goolge analytics".
+            </summary>
+        </member>
+        <member name="M:Palaso.Reporting.AnalyticsEventSender.SendEvent(System.String,System.String,System.String,System.String,System.Int32)">
+            <summary>
+            http://code.google.com/apis/analytics/docs/tracking/eventTrackerGuide.html
+            </summary>
+            <param name="category">     Videos                  Runtime</param>
+            <param name="action">       Pause                   Error</param>
+            <param name="optionalLabel">Gone With The Wind      Exception Message</param>
+            <param name="optionalInteger">32 (that is, at 32 seconds into the video)</param>
+        </member>
+        <member name="M:Palaso.Reporting.AnalyticsEventSender.SendNavigationNotice(System.String,System.Object[])">
+            <summary>
+            Record a visit to part of the application, just as if it  were a page.
+            Leave it up to this method to insert things like the fact that you are in DEBUG mode, or what version is being used, etc.
+            </summary>
+            <example>SendNavigationNotice("aboutBox"), SendNavigationNotice("dictionary/browseView")</example>
+        </member>
         <member name="P:Palaso.Email.EmailMessage.Subject">
             <summary>
             the  e-mail subject
@@ -1108,9 +1188,15 @@
             new StoreID that would be assigned.
             </summary>
         </member>
+        <member name="M:Palaso.WritingSystems.IWritingSystemStore.Contains(System.String)">
+            <summary>
+            Returns true if a writing system with the given Store ID exists in the store
+            </summary>
+        </member>
         <member name="M:Palaso.WritingSystems.IWritingSystemStore.Exists(System.String)">
             <summary>
             Returns true if a writing system with the given Store ID exists in the store
+            Contains is preferred
             </summary>
         </member>
         <member name="M:Palaso.WritingSystems.IWritingSystemStore.CreateNew">
@@ -1176,29 +1262,9 @@
             </summary>
             <returns>Next text</returns>
         </member>
-        <member name="M:Palaso.Reporting.Network.ProxyCredentialsRequestDialog.GetCredentials(System.Boolean)">
+        <member name="P:Palaso.Reporting.ReportingSettings.PreviousVersion">
             <summary>
-            
-            </summary>
-            <param name="doTryStoredCredentials">Call it first with this true, but if that doesn't work, call with this
-            false so that we ask the user again</param>
-            <returns></returns>
-        </member>
-        <member name="F:Palaso.Reporting.Network.ProxyCredentialsRequestDialog.components">
-            <summary>
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:Palaso.Reporting.Network.ProxyCredentialsRequestDialog.Dispose(System.Boolean)">
-            <summary>
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:Palaso.Reporting.Network.ProxyCredentialsRequestDialog.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
+            help notice that someone upgraded
             </summary>
         </member>
         <member name="M:Palaso.Xml.XmlNodeExtensions.SafeSelectNodes(System.Xml.XmlNode,System.String,System.Xml.XmlNamespaceManager)">
@@ -1731,6 +1797,27 @@
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
+        <member name="T:Palaso.Xml.CanonicalXmlSettings">
+            <summary>
+             Canonical xml settings suitable for use in Chorus applications.
+            </summary>
+        </member>
+        <member name="M:Palaso.Xml.CanonicalXmlSettings.CreateXmlWriterSettings(System.Xml.ConformanceLevel)">
+            <summary>
+             Return an XmlWriterSettings suitable for use in Chorus applications.
+            </summary>
+             <remarks>
+             This formats with new line on attributes, indents with tab, and encoded in UTF8 with no BOM.
+             </remarks>
+             <param name="conformanceLevel">Document|Fragment</param>
+            <returns>XmlWriterSettings</returns>
+        </member>
+        <member name="M:Palaso.Xml.CanonicalXmlSettings.CreateXmlWriterSettings">
+            <summary>
+             
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Palaso.WritingSystems.Collation.SimpleRulesCollator.Compare(System.String,System.String)">
             <summary>Compares two strings and returns a value indicating whether one is less than, 
              equal to, or greater than the other.</summary>
@@ -1902,22 +1989,6 @@
             Gets the exception that occurred, or null if there was an unspecified error
             </summary>
         </member>
-        <member name="T:Palaso.Migration.IMigrationStrategy">
-            <summary>
-             Used by Migrator to migrate from one version to another.
-            </summary>
-        </member>
-        <member name="M:Palaso.CommandLineProcessing.ConsoleProgress.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-            <filterpriority>2</filterpriority>
-        </member>
-        <member name="T:Palaso.CommandLineProcessing.LabelStatus">
-            <summary>
-            Just conveys status, not all messages
-            </summary>
-        </member>
         <member name="T:Palaso.WritingSystems.WritingSystemDefinition">
             <summary>
             This class stores the information used to define various writing system properties.
@@ -1935,8 +2006,14 @@
         </member>
         <member name="M:Palaso.WritingSystems.WritingSystemDefinition.#ctor">
             <summary>
-            For overridding the other identifier fields, to specify a custom RFC5646
+            For overriding the other identifier fields, to specify a custom RFC5646
             </summary>
+        </member>
+        <member name="M:Palaso.WritingSystems.WritingSystemDefinition.#ctor(Palaso.WritingSystems.WritingSystemDefinition)">
+            <summary>
+            Copy constructor.
+            </summary>
+            <param name="ws">The ws.</param>
         </member>
         <member name="M:Palaso.WritingSystems.WritingSystemDefinition.LoadScriptOptionsIfNeeded">
             <summary>
@@ -1972,6 +2049,11 @@
             The ISO-639 code which is also the Ethnologue code.
             </summary>
         </member>
+        <member name="P:Palaso.WritingSystems.WritingSystemDefinition.ISO639">
+            <summary>
+            The ISO-639 code which is also the Ethnologue code.
+            </summary>
+        </member>
         <member name="P:Palaso.WritingSystems.WritingSystemDefinition.StoreID">
             <summary>
             Other classes that persist this need to know when our id changed, so they can
@@ -1996,7 +2078,7 @@
         </member>
         <member name="F:Palaso.WritingSystems.WritingSystemDefinition.SortRulesType.DefaultOrdering">
             <summary>
-            Default Unicode ordering rules
+            Default Unicode ordering rules (actually CustomICU without any rules)
             </summary>
         </member>
         <member name="F:Palaso.WritingSystems.WritingSystemDefinition.SortRulesType.CustomSimple">
@@ -2011,7 +2093,7 @@
         </member>
         <member name="F:Palaso.WritingSystems.WritingSystemDefinition.SortRulesType.OtherLanguage">
             <summary>
-            Use the sort rules from another language. When this is set, the SortRules are interpretted as a cultureId for the language to sort like.
+            Use the sort rules from another language. When this is set, the SortRules are interpreted as a cultureId for the language to sort like.
             </summary>
         </member>
         <member name="P:Palaso.UiBindings.IBindableControl`1.Value">
@@ -2161,18 +2243,6 @@
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
             </summary>
-        </member>
-        <member name="T:Palaso.Migration.XmlReaderWriterMigrator">
-            <summary>
-             Copies an xml file, giving an opportunity to inspect each node in the CopyNode method.
-            </summary>
-        </member>
-        <member name="M:Palaso.Migration.XmlReaderWriterMigrator.Migrate(System.String,System.String)">
-            <summary>
-             Copies sourceFilePath to destinationFilePath calling CopyNode for each node read.
-            </summary>
-            <param name="source"></param>
-            <param name="destinationFilePath"></param>
         </member>
         <member name="M:Palaso.WritingSystems.LdmlInFolderWritingSystemStore.#ctor">
             <summary>
@@ -2432,7 +2502,7 @@
             Just conveys status, not all messages
             </summary>
         </member>
-        <member name="M:Palaso.IO.FileLocator.GetFileDistributedWithApplication(System.String[])">
+        <member name="M:Palaso.IO.FileLocator.GetFileDistributedWithApplication(System.Boolean,System.String[])">
             <summary>
             Find a file which, on a development machine, lives in [solution]/[distFileFolderName]/[subPath],
             and when installed, lives in 
@@ -2441,9 +2511,26 @@
             </summary>
             <example>GetFileDistributedWithApplication("info", "releaseNotes.htm");</example>
         </member>
-        <member name="M:Palaso.IO.FileLocator.GetDirectoryDistributedWithApplication(System.String[])">
+        <member name="M:Palaso.IO.FileLocator.GetFileDistributedWithApplication(System.String[])">
+            <summary>
+            Find a file which MUST EXIST. On a development machine, lives in [solution]/[distFileFolderName]/[subPath],
+            and when installed, lives in 
+            [applicationFolder]/[distFileFolderName]/[subPath1]/[subPathN]  or
+            [applicationFolder]/[subPath]/[subPathN]
+            </summary>
+            <example>GetFileDistributedWithApplication("info", "releaseNotes.htm");</example>
+        </member>
+        <member name="M:Palaso.IO.FileLocator.GetDirectoryDistributedWithApplication(System.Boolean,System.String[])">
             <summary>
             Find a file which, on a development machine, lives in [solution]/DistFiles/[subPath],
+            and when installed, lives in 
+            [applicationFolder]/[subPath1]/[subPathN]
+            </summary>
+            <example>GetFileDistributedWithApplication("info", "releaseNotes.htm");</example>
+        </member>
+        <member name="M:Palaso.IO.FileLocator.GetDirectoryDistributedWithApplication(System.String[])">
+            <summary>
+            Find a directory which MUST EXIST. On a development machine, lives in [solution]/DistFiles/[subPath],
             and when installed, lives in 
             [applicationFolder]/[subPath1]/[subPathN]
             </summary>
@@ -2583,10 +2670,40 @@
               Looks up a localized string similar to This application must exit..
             </summary>
         </member>
-        <member name="M:Palaso.Reporting.Network.RobustNetworkOperation.Do(System.Action{System.Net.IWebProxy})">
+        <member name="T:Palaso.IO.TempFile">
             <summary>
-            Perform a web action, trying various things to use a proxy if needed, including requesting
-            (and remembering) user credentials from the user.
+            This is useful a temporary file is needed. When it is disposed, it will delete the file.
+            </summary>
+            <example>using(f = new TempFile())</example>
+        </member>
+        <member name="M:Palaso.IO.TempFile.TrackExisting(System.String)">
+            <summary>
+            Create a TempFile based on a pre-existing file, which will be deleted when this is disposed.
+            </summary>
+        </member>
+        <member name="M:Palaso.IO.TempFile.WithExtension(System.String)">
+            <summary>
+            Use this one when it's important to have a certain file extension 
+            </summary>
+            <param name="extension">with or with out '.', will work the same</param>
+        </member>
+        <member name="M:Palaso.IO.TempFile.FromResource(System.IO.Stream,System.String)">
+            <summary>
+            Used to make a real file out of a resource for the purpose of testing 
+            </summary>
+            <param name="resource">e.g., an audio resource</param>
+            <param name="extension">with or with out '.', will work the same</param>
+        </member>
+        <member name="M:Palaso.IO.TempFile.FromResource(System.Byte[],System.String)">
+            <summary>
+            Used to make a real file out of a resource for the purpose of testing 
+            </summary>
+            <param name="resource">e.g., a video resource</param>
+            <param name="extension">with or with out '.', will work the same</param>
+        </member>
+        <member name="M:Palaso.IO.TempFile.MoveTo(System.String)">
+            <summary>
+            Used to move a file to a new path 
             </summary>
         </member>
         <member name="T:Palaso.Data.PreciseDateTime">
@@ -2770,6 +2887,11 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="M:Palaso.Progress.LogBox.LogBox.SafeInvoke(System.Windows.Forms.Control,System.Action)">
+            <summary>
+            This is an attempt to avoid a mysterious crash (B.Waters) where the invoke was happening before the window's handle had been created
+            </summary>
+        </member>
         <member name="P:Palaso.Progress.LogBox.LogBox.GetDiagnosticsMethod">
             <summary>
             This is a callback the client can set to soemthing which will then generate
@@ -2802,6 +2924,37 @@
         <member name="T:Palaso.Progress.WorkInvoker">
             <summary>
             Delegate for a worker method which provides additional callbacks
+            </summary>
+        </member>
+        <member name="M:Palaso.Network.ProxyCredentialsRequestDialog.ReadProxyCredentials(System.String@,System.String@)">
+            <summary>
+            Get proxy creds from a place (not settings) that all palaso apps can share
+            </summary>
+            <returns>true if some credentials were found</returns>
+        </member>
+        <member name="M:Palaso.Network.ProxyCredentialsRequestDialog.GetCredentials(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="doTryStoredCredentials">Call it first with this true, but if that doesn't work, call with this
+            false so that we ask the user again</param>
+            <returns></returns>
+        </member>
+        <member name="F:Palaso.Network.ProxyCredentialsRequestDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Palaso.Network.ProxyCredentialsRequestDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Palaso.Network.ProxyCredentialsRequestDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
             </summary>
         </member>
         <member name="T:Spart.Debug.DebugContext">
@@ -3213,19 +3366,31 @@
             a label which describes what we are busy doing
             </summary>
         </member>
-        <member name="T:Palaso.Migration.XslMigrator">
+        <member name="T:Palaso.Migration.XslMigrationStrategy">
             <summary>
             </summary>
         </member>
-        <member name="M:Palaso.Migration.XslMigrator.#ctor(System.Int32,System.Int32,System.String)">
+        <member name="M:Palaso.Migration.XslMigrationStrategy.#ctor(System.Int32,System.Int32,System.String)">
             <summary>
             </summary>
             <param name="fromVersion"></param>
             <param name="toVersion"></param>
             <param name="xslSource">A string reference to the source of the xslt</param>
         </member>
-        <member name="M:Palaso.Migration.XslMigrator.Migrate(System.String,System.String)">
+        <member name="M:Palaso.Migration.XslMigrationStrategy.Migrate(System.String,System.String)">
             <summary>
+            </summary>
+            <param name="source"></param>
+            <param name="destinationFilePath"></param>
+        </member>
+        <member name="T:Palaso.Migration.XmlReaderWriterMigrationStrategy">
+            <summary>
+             Copies an xml file, giving an opportunity to inspect each node in the CopyNode method.
+            </summary>
+        </member>
+        <member name="M:Palaso.Migration.XmlReaderWriterMigrationStrategy.Migrate(System.String,System.String)">
+            <summary>
+             Copies sourceFilePath to destinationFilePath calling CopyNode for each node read.
             </summary>
             <param name="source"></param>
             <param name="destinationFilePath"></param>

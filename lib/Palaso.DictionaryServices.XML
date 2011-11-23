@@ -15,10 +15,48 @@
             </summary>
             
         </member>
+        <member name="T:Palaso.DictionaryServices.Model.LexReversal">
+            <summary>
+            Not implemented: main (waiting on liftwriter support)
+            Not implemented: grammatical-info
+            Not implemented: extensible.date
+            </summary>
+        </member>
+        <member name="P:Palaso.DictionaryServices.Model.LexReversal.Type">
+            <summary>
+            From a reversal-type rangeset
+            </summary>
+        </member>
         <member name="M:Palaso.DictionaryServices.Model.LexSense.#ctor">
             <summary>
             Used when a list of these items adds via "AddNew", where we have to have a default constructor.
             The parent is added in an event handler, on the parent, which is called by the list.
+            </summary>
+        </member>
+        <member name="P:Palaso.DictionaryServices.Model.LexSense.Notes">
+            <summary>
+            NOTE: in oct 2010, wesay does not yet use this field, as it only handles a single, typeless note and uses the well-known-properties approach
+            </summary>
+        </member>
+        <member name="T:Palaso.DictionaryServices.Model.LexNote">
+            <summary>
+            A note is used for storing descriptive information of many kinds including comments, bibliographic information and domain specific notes. Notes are used to hold informational content rather than meta-information about an element, for which an annotation should be used.
+            </summary>
+        </member>
+        <member name="P:Palaso.DictionaryServices.Model.LexNote.Type">
+            <summary>
+            Not implemented: extensible.date
+            </summary>
+        </member>
+        <member name="T:Palaso.DictionaryServices.Model.LexEtymology">
+            <summary>
+            Not implemented: media
+            Not implemented: extensible.date
+            </summary>
+        </member>
+        <member name="P:Palaso.DictionaryServices.Model.LexEtymology.Comment">
+            <summary>
+            as of lift 0.13, this doesn't exist, so the writer will have to make a <field/> or something
             </summary>
         </member>
         <member name="M:Palaso.DictionaryServices.Lift.LiftDataMapper.#ctor(System.String)">
@@ -44,6 +82,14 @@
             <summary>
             we initially, mistakenly put literal meaning on sense. This moves
             it and switches to newer naming style.
+            </summary>
+        </member>
+        <member name="T:Palaso.DictionaryServices.Model.LexVariant">
+            <summary>
+            not implemented: ref
+            not implemented: pronunciation
+            not implemented: relation
+            
             </summary>
         </member>
         <member name="M:Palaso.DictionaryServices.Lift.LiftWriter.#ctor(System.String,Palaso.DictionaryServices.Lift.LiftWriter.ByteOrderStyle)">
@@ -144,6 +190,12 @@
             WeSay uses this to populate definitions from glosses.
             </summary>
         </member>
+        <member name="T:Palaso.DictionaryServices.Model.LexPhonetic">
+            <summary>
+            Not implemented: media
+            Not implemented: extensible.date
+            </summary>
+        </member>
         <member name="M:Palaso.DictionaryServices.LiftLexEntryRepository.GetAllEntriesSortedByHeadword(Palaso.WritingSystems.WritingSystemDefinition)">
             <summary>
             Gets a ResultSet containing all entries sorted by citation if one exists and otherwise
@@ -227,6 +279,19 @@
             <param name="writingSystemDefinition"></param>
             <returns></returns>
         </member>
+        <member name="T:Palaso.DictionaryServices.Processors.HomographMerger">
+            <summary>
+            This is used by the "LiftTools" application. It finds all the homographs in 
+            a lexicon, and merges them if it can. It also merges their senses, if it can.
+            </summary>
+        </member>
+        <member name="M:Palaso.DictionaryServices.Processors.HomographMerger.MergeSensesWithinEntries(Palaso.DictionaryServices.LiftLexEntryRepository,Palaso.Progress.LogBox.IProgress)">
+            <summary>
+            it can happen that within a single entry, you can have mergable senses.
+            
+            NB!!!! this only thinks about merging the first 2 senses. (this was written as an emergency cleanup for a FLEx bug).
+            </summary>
+        </member>
         <member name="M:Palaso.DictionaryServices.Model.LexExampleSentence.#ctor">
             <summary>
             Used when a list of these items adds via "AddNew", where we have to have a default constructor.
@@ -266,6 +331,26 @@
             <remarks>The signature here is MultiText rather than LexicalFormMultiText because we want
             to hide this (hopefully temporary) performance implementation detail. </remarks>
         </member>
+        <member name="P:Palaso.DictionaryServices.Model.LexEntry.Variants">
+            <summary>
+            NOTE: in oct 2010, wesay does not yet use this field, but SOLID does
+            </summary>
+        </member>
+        <member name="P:Palaso.DictionaryServices.Model.LexEntry.Notes">
+            <summary>
+            NOTE: in oct 2010, wesay does not yet use this field, as it only handles a single, typeless note and uses the well-known-properties approach
+            </summary>
+        </member>
+        <member name="P:Palaso.DictionaryServices.Model.LexEntry.Pronunciations">
+            <summary>
+            NOTE: in oct 2010, wesay does not yet use this field, but SOLID does
+            </summary>
+        </member>
+        <member name="P:Palaso.DictionaryServices.Model.LexEntry.Etymologies">
+            <summary>
+            NOTE: in oct 2010, wesay does not yet use this field, but SOLID does
+            </summary>
+        </member>
         <member name="P:Palaso.DictionaryServices.Model.LexEntry.Guid">
             <summary>
             Used to track this entry across programs, for the purpose of merging and such.
@@ -300,12 +385,6 @@
             <summary>
             The name here is to remind us that our homograph number 
             system doesn't know how to take this into account
-            </summary>
-        </member>
-        <member name="T:Palaso.DictionaryServices.Processors.HomographMerger">
-            <summary>
-            This is used by the "LiftTools" application. It finds all the homographs in 
-            a lexicon, and merges them if it can. It also merges their senses, if it can.
             </summary>
         </member>
     </members>
