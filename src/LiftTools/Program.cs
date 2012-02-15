@@ -19,7 +19,12 @@ namespace LiftTools
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             SetupErrorHandling();
-            Application.Run(new Shell(new List<Tool>(new Tool[]{new MergeHomographs(), new Validator()})));
+            Application.Run(new Shell(new List<Tool>(new Tool[]
+                                                     {
+                                                         new MergeHomographs(), 
+                                                         new Validator(),
+                                                         new AudioFileNames()
+                                                     })));
             Settings.Default.Save();
         }
 
