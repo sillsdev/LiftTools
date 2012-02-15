@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace LiftTools.Tools
 {
@@ -12,5 +13,7 @@ namespace LiftTools.Tools
         public abstract void Run(string inputLiftPath, string outputLiftPath, Palaso.Progress.LogBox.IProgress progress);
 
         public abstract string InfoPageName { get; }
+
+        public UserControl ConfigControl { get; protected set; }
     }
 }
