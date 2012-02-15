@@ -72,7 +72,7 @@ namespace LiftTools
         private void _runToolButton_Click(object sender, EventArgs e)
         {
             _logBox.Clear();
-            tabControl1.SelectedTab = _logPage;
+            _tabControl.SelectedTab = _logPage;
             backgroundWorker1.RunWorkerAsync();
         }
 
@@ -93,8 +93,17 @@ namespace LiftTools
         private void _toolChooser_SelectedIndexChanged(object sender, EventArgs e)
         {
             _currentTool = ((Tool)_toolChooser.SelectedItem);
-            tabControl1.SelectedTab = _infoPage;
+            _tabControl.SelectedTab = _infoPage;
             _infoBrowser.Navigate(FileLocator.GetFileDistributedWithApplication(_currentTool.InfoPageName));
+            foreach (Control control in _configPage.Controls)
+            {
+                _configPage.Controls.Remove(control);
+            }
+            Control currentToolConfigControl = _currentTool.ConfigControl;
+            if (currentToolConfigControl != null)
+            {
+                _configPage.Controls.Add(currentToolConfigControl);
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)

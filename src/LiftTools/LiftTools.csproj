@@ -79,6 +79,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tools\AudioFileNames.cs" />
+    <Compile Include="Tools\AudioFileNamesConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\AudioFileNamesConfig.Designer.cs">
+      <DependentUpon>AudioFileNamesConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\OrphanFiles.cs" />
     <Compile Include="Tools\MergeHomographs.cs" />
     <Compile Include="Shell.cs">
@@ -103,6 +109,10 @@
     </Compile>
     <EmbeddedResource Include="Shell.resx">
       <DependentUpon>Shell.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\AudioFileNamesConfig.resx">
+      <DependentUpon>AudioFileNamesConfig.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

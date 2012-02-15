@@ -11,6 +11,14 @@ namespace LiftTools.Tools
     public class AudioFileNames : Tool
     {
         private IProgress _progress;
+        private readonly AudioFileNamesConfig _config;
+
+        public AudioFileNames()
+        {
+            _config = new AudioFileNamesConfig();
+            ConfigControl = _config;
+        }
+
         public override void Run(string inputLiftPath, string outputLiftPath, IProgress progress)
         {
             _progress = progress;

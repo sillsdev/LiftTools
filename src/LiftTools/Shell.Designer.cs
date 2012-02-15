@@ -37,13 +37,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this._liftPathDisplay = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this._tabControl = new System.Windows.Forms.TabControl();
             this._infoPage = new System.Windows.Forms.TabPage();
+            this._infoBrowser = new System.Windows.Forms.WebBrowser();
             this._logPage = new System.Windows.Forms.TabPage();
             this._logBox = new Palaso.Progress.LogBox.LogBox();
-            this._infoBrowser = new System.Windows.Forms.WebBrowser();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.tabControl1.SuspendLayout();
+            this._configPage = new System.Windows.Forms.TabPage();
+            this._tabControl.SuspendLayout();
             this._infoPage.SuspendLayout();
             this._logPage.SuspendLayout();
             this.SuspendLayout();
@@ -107,18 +108,19 @@
             this._liftPathDisplay.Size = new System.Drawing.Size(296, 20);
             this._liftPathDisplay.TabIndex = 7;
             // 
-            // tabControl1
+            // _tabControl
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this._tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this._infoPage);
-            this.tabControl1.Controls.Add(this._logPage);
-            this.tabControl1.Location = new System.Drawing.Point(25, 103);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(568, 299);
-            this.tabControl1.TabIndex = 9;
+            this._tabControl.Controls.Add(this._infoPage);
+            this._tabControl.Controls.Add(this._logPage);
+            this._tabControl.Controls.Add(this._configPage);
+            this._tabControl.Location = new System.Drawing.Point(25, 103);
+            this._tabControl.Name = "_tabControl";
+            this._tabControl.SelectedIndex = 0;
+            this._tabControl.Size = new System.Drawing.Size(568, 299);
+            this._tabControl.TabIndex = 9;
             // 
             // _infoPage
             // 
@@ -130,6 +132,15 @@
             this._infoPage.TabIndex = 0;
             this._infoPage.Text = "Info";
             this._infoPage.UseVisualStyleBackColor = true;
+            // 
+            // _infoBrowser
+            // 
+            this._infoBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._infoBrowser.Location = new System.Drawing.Point(3, 3);
+            this._infoBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this._infoBrowser.Name = "_infoBrowser";
+            this._infoBrowser.Size = new System.Drawing.Size(554, 267);
+            this._infoBrowser.TabIndex = 0;
             // 
             // _logPage
             // 
@@ -155,20 +166,20 @@
             this._logBox.Size = new System.Drawing.Size(554, 267);
             this._logBox.TabIndex = 9;
             // 
-            // _infoBrowser
-            // 
-            this._infoBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._infoBrowser.Location = new System.Drawing.Point(3, 3);
-            this._infoBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this._infoBrowser.Name = "_infoBrowser";
-            this._infoBrowser.Size = new System.Drawing.Size(554, 267);
-            this._infoBrowser.TabIndex = 0;
-            // 
             // timer1
             // 
             this.timer1.Enabled = true;
             this.timer1.Interval = 300;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // _configPage
+            // 
+            this._configPage.Location = new System.Drawing.Point(4, 22);
+            this._configPage.Name = "_configPage";
+            this._configPage.Size = new System.Drawing.Size(560, 273);
+            this._configPage.TabIndex = 2;
+            this._configPage.Text = "Config";
+            this._configPage.UseVisualStyleBackColor = true;
             // 
             // Shell
             // 
@@ -176,7 +187,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(625, 425);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this._tabControl);
             this.Controls.Add(this._liftPathDisplay);
             this.Controls.Add(this.label3);
             this.Controls.Add(this._runToolButton);
@@ -186,7 +197,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Shell";
             this.Text = "Form1";
-            this.tabControl1.ResumeLayout(false);
+            this._tabControl.ResumeLayout(false);
             this._infoPage.ResumeLayout(false);
             this._logPage.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -203,12 +214,13 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox _liftPathDisplay;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl _tabControl;
         private System.Windows.Forms.TabPage _infoPage;
         private System.Windows.Forms.TabPage _logPage;
         private Palaso.Progress.LogBox.LogBox _logBox;
         private System.Windows.Forms.WebBrowser _infoBrowser;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.TabPage _configPage;
     }
 }
 
