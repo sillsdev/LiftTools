@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tools\AudioFileNames.cs" />
+    <Compile Include="Tools\OrphanFiles.cs" />
     <Compile Include="Tools\MergeHomographs.cs" />
     <Compile Include="Shell.cs">
       <SubType>Form</SubType>
