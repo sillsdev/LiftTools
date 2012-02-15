@@ -13,8 +13,8 @@ namespace LiftTools.Tools
         private IProgress _progress;
         public override void Run(string inputLiftPath, string outputLiftPath, IProgress progress)
         {
-            CheckEnvironment(inputLiftPath);
             _progress = progress;
+            CheckEnvironment(inputLiftPath);
 
             var regex = new Regex(@"<text>(.*\.wav)</text>", RegexOptions.IgnoreCase);
             using (var reader = new StreamReader(inputLiftPath))

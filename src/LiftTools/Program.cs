@@ -23,7 +23,8 @@ namespace LiftTools
                                                      {
                                                          new MergeHomographs(), 
                                                          new Validator(),
-                                                         new AudioFileNames()
+                                                         new AudioFileNames(),
+                                                         new OrphanFiles()
                                                      })));
             Settings.Default.Save();
         }
