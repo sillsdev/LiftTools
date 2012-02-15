@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2670CAE2-0D89-4F62-AD74-9B02C73B930D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tools\AudioFileNames.cs" />
     <Compile Include="Tools\MergeHomographs.cs" />
     <Compile Include="Shell.cs">
       <SubType>Form</SubType>
