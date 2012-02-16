@@ -36,5 +36,10 @@ namespace LiftTools.Tools
             get { return _cbInsertLinkFromFile.Checked; }
         }
 
+        public bool DoReportGoodFiles
+        {
+            get { return _cbReportGoodFiles.Checked; }
+        }
+
     }
 }
