@@ -41,5 +41,10 @@ namespace LiftTools.Tools
             get { return _cbReportGoodFiles.Checked; }
         }
 
+    	public bool DoMoveRemainingFiles
+    	{
+			get { return _cbMoveRemainingOrphanFiles.Checked; }
+    	}
+
     }
 }

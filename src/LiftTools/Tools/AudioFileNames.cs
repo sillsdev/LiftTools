@@ -59,7 +59,25 @@ namespace LiftTools.Tools
                     }
                     _progress.WriteMessage("\n");
                 }
-            }
+            	string orphanPath = Path.Combine(AudioPath(inputLiftPath), "OrphanFiles");
+				foreach (var infoPair in audioFiles.Where(x => x.Value.FileFound && !x.Value.LinkFound))
+				{
+					var info = infoPair.Value;
+					if (_config.DoMoveRemainingFiles)
+					{
+						if (!Directory.Exists(orphanPath))
+						{
+							Directory.CreateDirectory(orphanPath);
+						}
+						File.Move(AudioFilePath(inputLiftPath, info.FileName), orphanPath);
+						_progress.WriteMessage("  MOVED ORPHANED FILE '{0}'", info.FileName);
+					} else
+					{
+						_progress.WriteMessage("  ORPHANED FILE '{0}'", info.FileName);
+					}
+				}
+				_progress.WriteMessage("\n");
+			}
 
             if (_config.DoReportGoodFiles)
             {
@@ -80,11 +98,31 @@ namespace LiftTools.Tools
             string searchTerm = fileName;
             if (searchTerm.Contains("-"))
             {
-                searchTerm = searchTerm.Split(new[] {'-'}, 1)[0];
+                searchTerm = searchTerm.Split(new[] {'-'}, 2)[0];
             }
-            var results = from entry in doc.Descendants("lexical-unit")
-                          where entry.Descendants("text").Where(x => x.Value == searchTerm)
+            var entries = from entry in doc.Descendants("entry")
+                          where entry.Descendants("text").Any(x => (x.Value == searchTerm))
                           select entry;
+			foreach (var entry in entries)
+			{
+				var idAttribute = entry.Attribute("id");
+				if (idAttribute != null)
+				{
+					_linkAudit.Links[fileName].LinkFound = true;
+					if (_config.DoInsertLinkFromFile)
+					{
+						_progress.WriteMessage("  ADDED '{0}' to Entry Id '{1}'", fileName, idAttribute.Value);
+						// Do it.
+					} else
+					{
+						_progress.WriteMessage("  COULD ADD '{0}' to Entry Id '{1}'", fileName, idAttribute.Value);
+					}
+				}
+				else
+				{
+					_progress.WriteMessageWithColor("red", "  ERROR Entry with no id attribute");
+				}
+			}
 
         }
 
