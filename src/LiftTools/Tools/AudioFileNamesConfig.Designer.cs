@@ -37,6 +37,8 @@
 			this._gbGoodFiles = new System.Windows.Forms.GroupBox();
 			this._cbReportGoodFiles = new System.Windows.Forms.CheckBox();
 			this._cbMoveRemainingOrphanFiles = new System.Windows.Forms.CheckBox();
+			this._lbWritingSystem = new System.Windows.Forms.LinkLabel();
+			this._comWritingSystem = new System.Windows.Forms.ComboBox();
 			this.groupBox1.SuspendLayout();
 			this._gbFilesWithoutLinks.SuspendLayout();
 			this._gbGoodFiles.SuspendLayout();
@@ -48,7 +50,7 @@
 			this.groupBox1.Controls.Add(this._cbFindFileFromLinkNumber);
 			this.groupBox1.Location = new System.Drawing.Point(3, 3);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(256, 75);
+			this.groupBox1.Size = new System.Drawing.Size(289, 75);
 			this.groupBox1.TabIndex = 1;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Links Without Files";
@@ -77,12 +79,14 @@
 			// 
 			// _gbFilesWithoutLinks
 			// 
+			this._gbFilesWithoutLinks.Controls.Add(this._comWritingSystem);
+			this._gbFilesWithoutLinks.Controls.Add(this._lbWritingSystem);
 			this._gbFilesWithoutLinks.Controls.Add(this._cbMoveRemainingOrphanFiles);
 			this._gbFilesWithoutLinks.Controls.Add(this._cbInsertLinkFromFile);
 			this._gbFilesWithoutLinks.Controls.Add(this._cbFindLinkFromFile);
 			this._gbFilesWithoutLinks.Location = new System.Drawing.Point(3, 84);
 			this._gbFilesWithoutLinks.Name = "_gbFilesWithoutLinks";
-			this._gbFilesWithoutLinks.Size = new System.Drawing.Size(256, 98);
+			this._gbFilesWithoutLinks.Size = new System.Drawing.Size(289, 119);
 			this._gbFilesWithoutLinks.TabIndex = 2;
 			this._gbFilesWithoutLinks.TabStop = false;
 			this._gbFilesWithoutLinks.Text = "Files Without Links";
@@ -113,9 +117,9 @@
 			// _gbGoodFiles
 			// 
 			this._gbGoodFiles.Controls.Add(this._cbReportGoodFiles);
-			this._gbGoodFiles.Location = new System.Drawing.Point(3, 188);
+			this._gbGoodFiles.Location = new System.Drawing.Point(3, 209);
 			this._gbGoodFiles.Name = "_gbGoodFiles";
-			this._gbGoodFiles.Size = new System.Drawing.Size(256, 51);
+			this._gbGoodFiles.Size = new System.Drawing.Size(289, 51);
 			this._gbGoodFiles.TabIndex = 3;
 			this._gbGoodFiles.TabStop = false;
 			this._gbGoodFiles.Text = "Links With Files";
@@ -135,12 +139,30 @@
 			// _cbMoveRemainingOrphanFiles
 			// 
 			this._cbMoveRemainingOrphanFiles.AutoSize = true;
-			this._cbMoveRemainingOrphanFiles.Location = new System.Drawing.Point(17, 68);
+			this._cbMoveRemainingOrphanFiles.Location = new System.Drawing.Point(16, 91);
 			this._cbMoveRemainingOrphanFiles.Name = "_cbMoveRemainingOrphanFiles";
 			this._cbMoveRemainingOrphanFiles.Size = new System.Drawing.Size(222, 17);
 			this._cbMoveRemainingOrphanFiles.TabIndex = 2;
 			this._cbMoveRemainingOrphanFiles.Text = "Move remaining files to OrphanFiles folder";
 			this._cbMoveRemainingOrphanFiles.UseVisualStyleBackColor = true;
+			// 
+			// _lbWritingSystem
+			// 
+			this._lbWritingSystem.AutoSize = true;
+			this._lbWritingSystem.Location = new System.Drawing.Point(37, 67);
+			this._lbWritingSystem.Name = "_lbWritingSystem";
+			this._lbWritingSystem.Size = new System.Drawing.Size(102, 13);
+			this._lbWritingSystem.TabIndex = 3;
+			this._lbWritingSystem.TabStop = true;
+			this._lbWritingSystem.Text = "With Writing System";
+			// 
+			// _comWritingSystem
+			// 
+			this._comWritingSystem.FormattingEnabled = true;
+			this._comWritingSystem.Location = new System.Drawing.Point(145, 64);
+			this._comWritingSystem.Name = "_comWritingSystem";
+			this._comWritingSystem.Size = new System.Drawing.Size(138, 21);
+			this._comWritingSystem.TabIndex = 4;
 			// 
 			// AudioFileNamesConfig
 			// 
@@ -150,7 +172,7 @@
 			this.Controls.Add(this._gbFilesWithoutLinks);
 			this.Controls.Add(this.groupBox1);
 			this.Name = "AudioFileNamesConfig";
-			this.Size = new System.Drawing.Size(274, 254);
+			this.Size = new System.Drawing.Size(305, 275);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this._gbFilesWithoutLinks.ResumeLayout(false);
@@ -172,6 +194,8 @@
         private System.Windows.Forms.GroupBox _gbGoodFiles;
         private System.Windows.Forms.CheckBox _cbReportGoodFiles;
 		private System.Windows.Forms.CheckBox _cbMoveRemainingOrphanFiles;
+		private System.Windows.Forms.LinkLabel _lbWritingSystem;
+		private System.Windows.Forms.ComboBox _comWritingSystem;
 
     }
 }

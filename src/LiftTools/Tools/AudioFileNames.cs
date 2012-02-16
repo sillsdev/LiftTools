@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using LiftTools.Tools.Common;
 using Palaso.Code;
 using Palaso.Progress.LogBox;
+using Palaso.Xml;
 
 namespace LiftTools.Tools
 {
@@ -48,18 +49,29 @@ namespace LiftTools.Tools
 
             if (_config.DoFindLinkFromFile)
             {
-                _progress.WriteMessage("FILE OK and LINK NOT FOUND");
-                using (var reader = new StreamReader(inputLiftPath))
-                {
-                    XDocument doc = XDocument.Load(reader);
-                    foreach (var infoPair in audioFiles.Where(x => !x.Value.LinkFound && x.Value.FileFound))
-                    {
-                        var info = infoPair.Value;
-                        FindWordForFile(doc, info.FileName);
-                    }
-                    _progress.WriteMessage("\n");
-                }
-            	string orphanPath = Path.Combine(AudioPath(inputLiftPath), "OrphanFiles");
+            	_progress.WriteMessage("FILE OK and LINK NOT FOUND");
+            	using (var reader = new StreamReader(inputLiftPath))
+            	{
+            		XDocument doc = XDocument.Load(reader);
+            		foreach (var infoPair in audioFiles.Where(x => !x.Value.LinkFound && x.Value.FileFound))
+            		{
+            			var info = infoPair.Value;
+            			FindWordForFile(doc, info.FileName);
+            		}
+            		_progress.WriteMessage("\n");
+            		if (_config.DoInsertLinkFromFile)
+            		{
+            			using (var writer = XmlWriter.Create(
+							new StreamWriter(outputLiftPath, false, Encoding.UTF8),
+            			    CanonicalXmlSettings.CreateXmlWriterSettings()
+						))
+            			{
+            				doc.WriteTo(writer);
+            			}
+            		}
+            	}
+        		
+				string orphanPath = Path.Combine(AudioPath(inputLiftPath), "OrphanFiles");
 				foreach (var infoPair in audioFiles.Where(x => x.Value.FileFound && !x.Value.LinkFound))
 				{
 					var info = infoPair.Value;
@@ -89,8 +101,9 @@ namespace LiftTools.Tools
                 }
                 _progress.WriteMessage("\n");
             }
-            _progress.WriteMessage("DONE");
-            //ValidateFile(progress, outputLiftPath);
+			
+			progress.WriteMessageWithColor("blue", "The processed lift is at " + outputLiftPath);
+			ValidateFile(progress, outputLiftPath);
         }
 
         private void FindWordForFile(XDocument doc, string fileName)
@@ -112,7 +125,18 @@ namespace LiftTools.Tools
 					if (_config.DoInsertLinkFromFile)
 					{
 						_progress.WriteMessage("  ADDED '{0}' to Entry Id '{1}'", fileName, idAttribute.Value);
-						// Do it.
+
+						var newForm = new XElement("form");
+						newForm.Add(new XAttribute("lang", _config.WritingSystemForNewAudioLinks));
+						newForm.Add(new XElement("text", fileName));
+
+						var lexicalUnit = entry.Descendants("lexical-unit").First();
+						if (lexicalUnit == null)
+						{
+							_progress.WriteMessageWithColor("red", "  ERROR Entry '{0}' has no lexical-unit", idAttribute.Value);
+							continue;
+						}
+						lexicalUnit.Add(newForm);
 					} else
 					{
 						_progress.WriteMessage("  COULD ADD '{0}' to Entry Id '{1}'", fileName, idAttribute.Value);
@@ -196,7 +220,7 @@ namespace LiftTools.Tools
         {
             progress.WriteMessage(""); 
             progress.WriteMessage("Validating the processed file...");
-            var errors = LiftIO.Validation.Validator.GetAnyValidationErrors(path);
+			var errors = Palaso.Lift.Validation.Validator.GetAnyValidationErrors(path);
             if (string.IsNullOrEmpty(errors))
             {
                 progress.WriteMessage("No Errors found.");
