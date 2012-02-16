@@ -1,6 +1,10 @@
 <html><body>
 <h3>Fix Audio File Names</h3>
 <p>This tool walks through a single LIFT dictionary file, looking for entries which look like they contain audio files. When it finds a reference to an audio file name, it checks for the existence of the audio file, if not found then it searches for the file using only the numeric part of the file name. If that is found, then the audio file is renamed to be consistent with the entry in the lift file.</p>
+<p>The audio file is scanned for files also. If files are found that have no link in the LIFT file, an attempt is made to create a link in the appropriate entry using the file name to match against a form of the lexeme.
+</p>
+<p>This tool can be configured under the config tab. By default the tool reports on what could be done.  Use the checkboxes to enable the various fixes.
+</p>
 
 <h3>Risks</h3>
 <p>No risk to the lift file itself, as this is only read to get the names of the audio files.  The audio files will be renamed, so make a backup first.</p>

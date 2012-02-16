@@ -14,7 +14,8 @@ namespace LiftTools.Tools
         public AudioFileNamesConfig()
         {
             InitializeComponent();
-			//Palaso.
+        	_lbWritingSystem.Visible = false;
+        	_comWritingSystem.Visible = false;
         }
 
         public bool DoFindFilesFromLinkNumber
