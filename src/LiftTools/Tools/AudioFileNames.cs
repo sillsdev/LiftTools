@@ -3,6 +3,9 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Linq;
+using System.Xml.Linq;
+using LiftTools.Tools.Common;
 using Palaso.Code;
 using Palaso.Progress.LogBox;
 
@@ -10,6 +13,7 @@ namespace LiftTools.Tools
 {
     public class AudioFileNames : Tool
     {
+        private LinkAudit _linkAudit;
         private IProgress _progress;
         private readonly AudioFileNamesConfig _config;
 
@@ -21,27 +25,67 @@ namespace LiftTools.Tools
 
         public override void Run(string inputLiftPath, string outputLiftPath, IProgress progress)
         {
+            _linkAudit = new LinkAudit();
             _progress = progress;
+
             CheckEnvironment(inputLiftPath);
+            _linkAudit.RunAudit(inputLiftPath, progress);
 
-            var regex = new Regex(@"<text>(.*\.wav)</text>", RegexOptions.IgnoreCase);
-            using (var reader = new StreamReader(inputLiftPath))
+            var audioFiles = _linkAudit.Links.Where(
+                x => x.Value.Type == LinkAudit.LinkInfo.Types.Audio
+            );
+
+            if (_config.DoFindFilesFromLinkNumber)
             {
-                while (!reader.EndOfStream)
+                _progress.WriteMessage("LINK OK and FILE NOT FOUND");
+                foreach (var infoPair in audioFiles.Where(x => x.Value.LinkFound && !x.Value.FileFound))
                 {
-                    string line = reader.ReadLine();
-                    if (string.IsNullOrEmpty(line)) continue;
-
-                    var match = regex.Match(line);
-                    if (match.Success)
-                    {
-                        FindAudioFile(inputLiftPath, match.Groups[1].Value);
-                    }
-
+                    var info = infoPair.Value;
+                    FindAudioFile(inputLiftPath, info.FileName);
                 }
+                _progress.WriteMessage("\n");
+            }
+
+            if (_config.DoFindLinkFromFile)
+            {
+                _progress.WriteMessage("FILE OK and LINK NOT FOUND");
+                using (var reader = new StreamReader(inputLiftPath))
+                {
+                    XDocument doc = XDocument.Load(reader);
+                    foreach (var infoPair in audioFiles.Where(x => !x.Value.LinkFound && x.Value.FileFound))
+                    {
+                        var info = infoPair.Value;
+                        FindWordForFile(doc, info.FileName);
+                    }
+                    _progress.WriteMessage("\n");
+                }
+            }
+
+            if (_config.DoReportGoodFiles)
+            {
+                _progress.WriteMessage("LINK OK and FILE OK");
+                foreach (var infoPair in audioFiles.Where(x => x.Value.LinkFound && x.Value.FileFound))
+                {
+                    var info = infoPair.Value;
+                    _progress.WriteMessage("  FOUND '{0}'", info.FileName);
+                }
+                _progress.WriteMessage("\n");
             }
             _progress.WriteMessage("DONE");
             //ValidateFile(progress, outputLiftPath);
+        }
+
+        private void FindWordForFile(XDocument doc, string fileName)
+        {
+            string searchTerm = fileName;
+            if (searchTerm.Contains("-"))
+            {
+                searchTerm = searchTerm.Split(new[] {'-'}, 1)[0];
+            }
+            var results = from entry in doc.Descendants("lexical-unit")
+                          where entry.Descendants("text").Where(x => x.Value == searchTerm)
+                          select entry;
+
         }
 
         private static string ProjectPath(string liftFilePath)
@@ -73,9 +117,8 @@ namespace LiftTools.Tools
         private void FindAudioFile(string liftFilePath, string fileName)
         {
             string audioFilePath = AudioFilePath(liftFilePath, fileName);
-            if (File.Exists(audioFilePath))
+            if (File.Exists(audioFilePath)) // It really shouldn't if LinkAudit is doing it's job.
             {
-                _progress.WriteMessage("FOUND '{0}'", fileName);
                 return;
             }
             // It doesn't exist. See if we can find a file that matches the numeric part of the filename.
@@ -84,25 +127,31 @@ namespace LiftTools.Tools
             var match = regex.Match(fileName);
             if (!match.Success)
             {
-                _progress.WriteMessageWithColor("red", "Could not use filename '{0}' to match", fileName);
+                _progress.WriteMessageWithColor("red", "  Could not use filename '{0}' to match", fileName);
                 return;
             }
             string searchPattern = String.Format("*{0}.wav", match.Groups[1].Value);
             var fileNamesFound = Directory.GetFiles(audioPath, searchPattern, SearchOption.TopDirectoryOnly);
             if (fileNamesFound.Length == 0)
             {
-                _progress.WriteMessageWithColor("red", "NOT FOUND '{0}'", fileName);
+                _progress.WriteMessageWithColor("red", "  NOT FOUND '{0}'", fileName);
                 return;
             }
             if (fileNamesFound.Length > 1)
             {
-                _progress.WriteMessageWithColor("red", "Multiple matches for '{0}'", fileName);
+                _progress.WriteMessageWithColor("red", "  Multiple matches for '{0}'", fileName);
                 return;
             }
             string foundFilePath = fileNamesFound[0];
             string foundFileName = Path.GetFileName(foundFilePath);
-            File.Move(foundFilePath, audioFilePath);
-            _progress.WriteMessage("MOVED '{0}' from '{1}'", fileName, foundFileName);
+            if (_config.DoRenameFilesFromLink)
+            {
+                File.Move(foundFilePath, audioFilePath);
+                _progress.WriteMessage("  MOVED '{0}' from '{1}'", fileName, foundFileName);
+            } else
+            {
+                _progress.WriteMessage("  COULD MOVE '{0}' from '{1}'", fileName, foundFileName);
+            }
         }
 
         private void ValidateFile(IProgress progress, string path)

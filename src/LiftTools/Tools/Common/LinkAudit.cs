@@ -8,7 +8,7 @@ namespace LiftTools.Tools.Common
 {
     public class LinkAudit
     {
-        private class LinkInfo
+        public class LinkInfo
         {
             public enum Types
             {
@@ -49,16 +49,16 @@ namespace LiftTools.Tools.Common
 
         }
 
-        private Dictionary<string, LinkInfo> _linkinfo;
-
         private IProgress _progress;
 
         public string LiftFilePath { get; private set; }
 
+        public Dictionary<string, LinkInfo> Links { get; private set; }
+
         public void RunAudit(string inputLiftPath, IProgress progress)
         {
             _progress = progress;
-            _linkinfo = new Dictionary<string, LinkInfo>();
+            Links = new Dictionary<string, LinkInfo>();
 
             CheckEnvironment(inputLiftPath);
 
@@ -74,7 +74,7 @@ namespace LiftTools.Tools.Common
                     var match = audioRegex.Match(line);
                     if (match.Success)
                     {
-                        _linkinfo.Add(match.Groups[1].Value, LinkInfo.CreateFromLink(match.Groups[1].Value, LinkInfo.Types.Audio));
+                        Links.Add(match.Groups[1].Value, LinkInfo.CreateFromLink(match.Groups[1].Value, LinkInfo.Types.Audio));
                         continue;
                     }
                     match = imageRegex.Match(line);
@@ -86,9 +86,9 @@ namespace LiftTools.Tools.Common
                         if (!String.IsNullOrEmpty(imageFile))
                         {
                             // Images may be used more than once.
-                            if (!_linkinfo.ContainsKey(imageFile))
+                            if (!Links.ContainsKey(imageFile))
                             {
-                                _linkinfo.Add(imageFile, LinkInfo.CreateFromLink(imageFile, LinkInfo.Types.Image));
+                                Links.Add(imageFile, LinkInfo.CreateFromLink(imageFile, LinkInfo.Types.Image));
                             }
                         }
                     }
@@ -139,12 +139,12 @@ namespace LiftTools.Tools.Common
             {
                 string fileName = Path.GetFileName(filePath);
                 if (String.IsNullOrEmpty(fileName)) continue;
-                if (_linkinfo.ContainsKey(fileName))
+                if (Links.ContainsKey(fileName))
                 {
-                    _linkinfo[fileName].FileFound = true;
+                    Links[fileName].FileFound = true;
                 } else
                 {
-                    _linkinfo.Add(fileName, LinkInfo.CreateFromFile(fileName, type));
+                    Links.Add(fileName, LinkInfo.CreateFromFile(fileName, type));
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace LiftTools.Tools.Common
         public void LogReport()
         {
             _progress.WriteMessage("Links with no files:");
-            foreach (var linkInfoPair in _linkinfo)
+            foreach (var linkInfoPair in Links)
             {
                 var linkInfo = linkInfoPair.Value;
                 if (linkInfo.LinkFound && !linkInfo.FileFound)
@@ -162,7 +162,7 @@ namespace LiftTools.Tools.Common
             }
             _progress.WriteMessage("\n");
             _progress.WriteMessage("Files with no links:");
-            foreach (var linkInfoPair in _linkinfo)
+            foreach (var linkInfoPair in Links)
             {
                 var linkInfo = linkInfoPair.Value;
                 if (!linkInfo.LinkFound && linkInfo.FileFound)
