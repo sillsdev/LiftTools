@@ -54,9 +54,6 @@
     <Reference Include="Commons.Xml.Relaxng">
       <HintPath>..\..\lib\Commons.Xml.Relaxng.dll</HintPath>
     </Reference>
-    <Reference Include="LiftIO">
-      <HintPath>..\..\lib\LiftIO.dll</HintPath>
-    </Reference>
     <Reference Include="Palaso">
       <HintPath>..\..\lib\Palaso.dll</HintPath>
     </Reference>
@@ -66,6 +63,10 @@
     </Reference>
     <Reference Include="Palaso.Lift">
       <HintPath>..\..\lib\Palaso.Lift.dll</HintPath>
+    </Reference>
+    <Reference Include="PalasoUIWindowsForms, Version=1.9.220.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\PalasoUIWindowsForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -110,6 +111,7 @@
     </Compile>
     <EmbeddedResource Include="Shell.resx">
       <DependentUpon>Shell.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\AudioFileNamesConfig.resx">
       <DependentUpon>AudioFileNamesConfig.cs</DependentUpon>
