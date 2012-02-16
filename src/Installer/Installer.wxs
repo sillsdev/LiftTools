@@ -117,8 +117,8 @@ are trying to support, you're better off using non-advertised shortcuts. "-->
             <File Id="Palaso.Lift.dll" Name="Palaso.Lift.dll" KeyPath="yes" Source="..\..\output\release\Palaso.Lift.dll" />
           </Component>
 
-          <Component Id="LiftIO.dll" Guid="{EC2E5E3E-19E8-4680-8377-447DBDDE9BDF}">
-            <File Id="LiftIO.dll" Name="LiftIO.dll" KeyPath="yes" Source="..\..\output\release\LiftIO.dll" />
+          <Component Id="PalasoUIWindowsForms.dll" Guid="{2734011D-C134-4c3f-B41F-7B886AFA7BF2}">
+            <File Id="PalasoUIWindowsForms.dll" Name="PalasoUIWindowsForms.dll" KeyPath="yes" Source="..\..\output\release\PalasoUIWindowsForms.dll" />
           </Component>
           <Component Id="Commons.Xml.Relaxng.dll" Guid="{68959BF8-AC50-47FD-8B06-718B3E7FC6B6}">
             <File Id="Commons.Xml.Relaxng.dll" Name="Commons.Xml.Relaxng.dll" KeyPath="yes" Source="..\..\output\release\Commons.Xml.Relaxng.dll" />
@@ -136,7 +136,7 @@ are trying to support, you're better off using non-advertised shortcuts. "-->
       <ComponentRef Id="Palaso.dll"/>
       <ComponentRef Id="Palaso.Lift.dll"/>
       <ComponentRef Id="Palaso.DictionaryServices.dll"/>
-      <ComponentRef Id="LiftIO.dll"/>
+      <ComponentRef Id="PalasoUIWindowsForms.dll"/>
       <ComponentRef Id="Commons.Xml.Relaxng.dll" />
 
       <ComponentRef Id="Icu.Net.dll"/>
