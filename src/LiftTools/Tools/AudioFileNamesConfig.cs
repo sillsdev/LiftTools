@@ -15,5 +15,26 @@ namespace LiftTools.Tools
         {
             InitializeComponent();
         }
+
+        public bool DoFindFilesFromLinkNumber
+        {
+            get { return _cbFindFileFromLinkNumber.Checked; }
+        }
+
+        public bool DoRenameFilesFromLink
+        {
+            get { return _cbRenameFile.Checked; }
+        }
+
+        public bool DoFindLinkFromFile
+        {
+            get { return _cbFindLinkFromFile.Checked; }
+        }
+
+        public bool DoInsertLinkFromFile
+        {
+            get { return _cbInsertLinkFromFile.Checked; }
+        }
+
     }
 }

@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this._cbFindByNumber = new System.Windows.Forms.CheckBox();
-            this._cbRenameFiles = new System.Windows.Forms.CheckBox();
+            this._cbFindFileFromLinkNumber = new System.Windows.Forms.CheckBox();
+            this._cbRenameFile = new System.Windows.Forms.CheckBox();
             this._gbFilesWithoutLinks = new System.Windows.Forms.GroupBox();
-            this._cbFindLinkByWord = new System.Windows.Forms.CheckBox();
-            this._cbInsertLink = new System.Windows.Forms.CheckBox();
+            this._cbFindLinkFromFile = new System.Windows.Forms.CheckBox();
+            this._cbInsertLinkFromFile = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this._gbFilesWithoutLinks.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this._cbRenameFiles);
-            this.groupBox1.Controls.Add(this._cbFindByNumber);
+            this.groupBox1.Controls.Add(this._cbRenameFile);
+            this.groupBox1.Controls.Add(this._cbFindFileFromLinkNumber);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(256, 75);
@@ -49,30 +49,30 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Links Without Files";
             // 
-            // _cbFindByNumber
+            // _cbFindFileFromLinkNumber
             // 
-            this._cbFindByNumber.AutoSize = true;
-            this._cbFindByNumber.Location = new System.Drawing.Point(17, 19);
-            this._cbFindByNumber.Name = "_cbFindByNumber";
-            this._cbFindByNumber.Size = new System.Drawing.Size(207, 17);
-            this._cbFindByNumber.TabIndex = 1;
-            this._cbFindByNumber.Text = "Try to find file name using numeric part";
-            this._cbFindByNumber.UseVisualStyleBackColor = true;
+            this._cbFindFileFromLinkNumber.AutoSize = true;
+            this._cbFindFileFromLinkNumber.Location = new System.Drawing.Point(17, 19);
+            this._cbFindFileFromLinkNumber.Name = "_cbFindFileFromLinkNumber";
+            this._cbFindFileFromLinkNumber.Size = new System.Drawing.Size(207, 17);
+            this._cbFindFileFromLinkNumber.TabIndex = 1;
+            this._cbFindFileFromLinkNumber.Text = "Try to find file name using numeric part";
+            this._cbFindFileFromLinkNumber.UseVisualStyleBackColor = true;
             // 
-            // _cbRenameFiles
+            // _cbRenameFile
             // 
-            this._cbRenameFiles.AutoSize = true;
-            this._cbRenameFiles.Location = new System.Drawing.Point(17, 43);
-            this._cbRenameFiles.Name = "_cbRenameFiles";
-            this._cbRenameFiles.Size = new System.Drawing.Size(87, 17);
-            this._cbRenameFiles.TabIndex = 2;
-            this._cbRenameFiles.Text = "Rename files";
-            this._cbRenameFiles.UseVisualStyleBackColor = true;
+            this._cbRenameFile.AutoSize = true;
+            this._cbRenameFile.Location = new System.Drawing.Point(17, 43);
+            this._cbRenameFile.Name = "_cbRenameFile";
+            this._cbRenameFile.Size = new System.Drawing.Size(87, 17);
+            this._cbRenameFile.TabIndex = 2;
+            this._cbRenameFile.Text = "Rename files";
+            this._cbRenameFile.UseVisualStyleBackColor = true;
             // 
             // _gbFilesWithoutLinks
             // 
-            this._gbFilesWithoutLinks.Controls.Add(this._cbInsertLink);
-            this._gbFilesWithoutLinks.Controls.Add(this._cbFindLinkByWord);
+            this._gbFilesWithoutLinks.Controls.Add(this._cbInsertLinkFromFile);
+            this._gbFilesWithoutLinks.Controls.Add(this._cbFindLinkFromFile);
             this._gbFilesWithoutLinks.Location = new System.Drawing.Point(3, 84);
             this._gbFilesWithoutLinks.Name = "_gbFilesWithoutLinks";
             this._gbFilesWithoutLinks.Size = new System.Drawing.Size(256, 75);
@@ -80,26 +80,26 @@
             this._gbFilesWithoutLinks.TabStop = false;
             this._gbFilesWithoutLinks.Text = "Files Without Links";
             // 
-            // _cbFindLinkByWord
+            // _cbFindLinkFromFile
             // 
-            this._cbFindLinkByWord.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this._cbFindLinkByWord.AutoSize = true;
-            this._cbFindLinkByWord.Location = new System.Drawing.Point(17, 20);
-            this._cbFindLinkByWord.Name = "_cbFindLinkByWord";
-            this._cbFindLinkByWord.Size = new System.Drawing.Size(237, 17);
-            this._cbFindLinkByWord.TabIndex = 0;
-            this._cbFindLinkByWord.Text = "Try to match word using text part of file name";
-            this._cbFindLinkByWord.UseVisualStyleBackColor = true;
+            this._cbFindLinkFromFile.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this._cbFindLinkFromFile.AutoSize = true;
+            this._cbFindLinkFromFile.Location = new System.Drawing.Point(17, 20);
+            this._cbFindLinkFromFile.Name = "_cbFindLinkFromFile";
+            this._cbFindLinkFromFile.Size = new System.Drawing.Size(237, 17);
+            this._cbFindLinkFromFile.TabIndex = 0;
+            this._cbFindLinkFromFile.Text = "Try to match word using text part of file name";
+            this._cbFindLinkFromFile.UseVisualStyleBackColor = true;
             // 
-            // _cbInsertLink
+            // _cbInsertLinkFromFile
             // 
-            this._cbInsertLink.AutoSize = true;
-            this._cbInsertLink.Location = new System.Drawing.Point(17, 44);
-            this._cbInsertLink.Name = "_cbInsertLink";
-            this._cbInsertLink.Size = new System.Drawing.Size(71, 17);
-            this._cbInsertLink.TabIndex = 1;
-            this._cbInsertLink.Text = "Insert link";
-            this._cbInsertLink.UseVisualStyleBackColor = true;
+            this._cbInsertLinkFromFile.AutoSize = true;
+            this._cbInsertLinkFromFile.Location = new System.Drawing.Point(17, 44);
+            this._cbInsertLinkFromFile.Name = "_cbInsertLinkFromFile";
+            this._cbInsertLinkFromFile.Size = new System.Drawing.Size(71, 17);
+            this._cbInsertLinkFromFile.TabIndex = 1;
+            this._cbInsertLinkFromFile.Text = "Insert link";
+            this._cbInsertLinkFromFile.UseVisualStyleBackColor = true;
             // 
             // AudioFileNamesConfig
             // 
@@ -120,11 +120,11 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox _cbRenameFiles;
-        private System.Windows.Forms.CheckBox _cbFindByNumber;
+        private System.Windows.Forms.CheckBox _cbRenameFile;
+        private System.Windows.Forms.CheckBox _cbFindFileFromLinkNumber;
         private System.Windows.Forms.GroupBox _gbFilesWithoutLinks;
-        private System.Windows.Forms.CheckBox _cbFindLinkByWord;
-        private System.Windows.Forms.CheckBox _cbInsertLink;
+        private System.Windows.Forms.CheckBox _cbFindLinkFromFile;
+        private System.Windows.Forms.CheckBox _cbInsertLinkFromFile;
 
     }
 }
