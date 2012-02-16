@@ -85,6 +85,7 @@
     <Compile Include="Tools\AudioFileNamesConfig.Designer.cs">
       <DependentUpon>AudioFileNamesConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Common\LinkAudit.cs" />
     <Compile Include="Tools\OrphanFiles.cs" />
     <Compile Include="Tools\MergeHomographs.cs" />
     <Compile Include="Shell.cs">
