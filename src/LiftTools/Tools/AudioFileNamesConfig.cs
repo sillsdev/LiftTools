@@ -14,6 +14,7 @@ namespace LiftTools.Tools
         public AudioFileNamesConfig()
         {
             InitializeComponent();
+			//Palaso.
         }
 
         public bool DoFindFilesFromLinkNumber
@@ -44,6 +45,11 @@ namespace LiftTools.Tools
     	public bool DoMoveRemainingFiles
     	{
 			get { return _cbMoveRemainingOrphanFiles.Checked; }
+    	}
+
+    	public string WritingSystemForNewAudioLinks
+    	{
+			get { return "qaa-x-audio"; } // TODO Sort out the writing systems control CP 2012-02
     	}
 
     }
