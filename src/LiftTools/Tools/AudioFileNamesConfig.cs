@@ -14,6 +14,8 @@ namespace LiftTools.Tools
         public AudioFileNamesConfig()
         {
             InitializeComponent();
+        	_lbWritingSystem.Visible = false;
+        	_comWritingSystem.Visible = false;
         }
 
         public bool DoFindFilesFromLinkNumber
@@ -35,6 +37,21 @@ namespace LiftTools.Tools
         {
             get { return _cbInsertLinkFromFile.Checked; }
         }
+
+        public bool DoReportGoodFiles
+        {
+            get { return _cbReportGoodFiles.Checked; }
+        }
+
+    	public bool DoMoveRemainingFiles
+    	{
+			get { return _cbMoveRemainingOrphanFiles.Checked; }
+    	}
+
+    	public string WritingSystemForNewAudioLinks
+    	{
+			get { return "qaa-x-audio"; } // TODO Sort out the writing systems control CP 2012-02
+    	}
 
     }
 }
