@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -8,6 +9,8 @@ using System.Xml.Linq;
 using LiftTools.Tools.Common;
 using Palaso.Code;
 using Palaso.Progress.LogBox;
+using Palaso.WritingSystems;
+using Palaso.WritingSystems.Migration.WritingSystemsLdmlV0To1Migration;
 using Palaso.Xml;
 
 namespace LiftTools.Tools
@@ -17,19 +20,48 @@ namespace LiftTools.Tools
         private LinkAudit _linkAudit;
         private IProgress _progress;
         private readonly AudioFileNamesConfig _config;
+    	private IWritingSystemRepository _writingSystems;
+    	private IEnumerable<WritingSystemRepositoryProblem> _loadProblems;
+    	private IEnumerable<LdmlVersion0MigrationStrategy.MigrationInfo> _migrationInfo;
 
-        public AudioFileNames()
+    	public AudioFileNames()
         {
             _config = new AudioFileNamesConfig();
             ConfigControl = _config;
         }
 
-        public override void Run(string inputLiftPath, string outputLiftPath, IProgress progress)
+		public override void OnLiftFilePathChanged(string liftFilePath)
+		{
+			string projectPath = Path.GetDirectoryName(liftFilePath);
+			string writingSystemPath = Path.Combine(projectPath, "WritingSystems");
+			_writingSystems = LdmlInFolderWritingSystemRepository.Initialize(writingSystemPath, OnMigration, OnLoadProblem);
+			_config.SetWritingSystemRepository(_writingSystems);
+		}
+
+    	private void OnLoadProblem(IEnumerable<WritingSystemRepositoryProblem> problems)
+    	{
+    		_loadProblems = problems;
+    	}
+
+    	private void OnMigration(IEnumerable<LdmlVersion0MigrationStrategy.MigrationInfo> migrationinfo)
+    	{
+    		_migrationInfo = migrationinfo;
+    	}
+
+    	public override void Run(string inputLiftPath, string outputLiftPath, IProgress progress)
         {
             _linkAudit = new LinkAudit();
             _progress = progress;
 
             CheckEnvironment(inputLiftPath);
+    		_config.SetWritingSystemRepository(_writingSystems);
+
+			foreach (var problem in _loadProblems)
+			{
+				_progress.WriteMessageWithColor(
+					"red", "Writing System Problem: [{0}] {1}", problem.FilePath, problem.Exception.Message);
+			}
+
             _linkAudit.RunAudit(inputLiftPath, progress);
 
             var audioFiles = _linkAudit.Links.Where(
