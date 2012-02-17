@@ -32,13 +32,13 @@
 			this._cbRenameFile = new System.Windows.Forms.CheckBox();
 			this._cbFindFileFromLinkNumber = new System.Windows.Forms.CheckBox();
 			this._gbFilesWithoutLinks = new System.Windows.Forms.GroupBox();
+			this._lbWritingSystem = new System.Windows.Forms.LinkLabel();
+			this._cbMoveRemainingOrphanFiles = new System.Windows.Forms.CheckBox();
 			this._cbInsertLinkFromFile = new System.Windows.Forms.CheckBox();
 			this._cbFindLinkFromFile = new System.Windows.Forms.CheckBox();
 			this._gbGoodFiles = new System.Windows.Forms.GroupBox();
 			this._cbReportGoodFiles = new System.Windows.Forms.CheckBox();
-			this._cbMoveRemainingOrphanFiles = new System.Windows.Forms.CheckBox();
-			this._lbWritingSystem = new System.Windows.Forms.LinkLabel();
-			this._comWritingSystem = new System.Windows.Forms.ComboBox();
+			this._cbWritingSystem = new Palaso.UI.WindowsForms.WritingSystems.WSPickerUsingComboBox();
 			this.groupBox1.SuspendLayout();
 			this._gbFilesWithoutLinks.SuspendLayout();
 			this._gbGoodFiles.SuspendLayout();
@@ -79,7 +79,7 @@
 			// 
 			// _gbFilesWithoutLinks
 			// 
-			this._gbFilesWithoutLinks.Controls.Add(this._comWritingSystem);
+			this._gbFilesWithoutLinks.Controls.Add(this._cbWritingSystem);
 			this._gbFilesWithoutLinks.Controls.Add(this._lbWritingSystem);
 			this._gbFilesWithoutLinks.Controls.Add(this._cbMoveRemainingOrphanFiles);
 			this._gbFilesWithoutLinks.Controls.Add(this._cbInsertLinkFromFile);
@@ -90,6 +90,27 @@
 			this._gbFilesWithoutLinks.TabIndex = 2;
 			this._gbFilesWithoutLinks.TabStop = false;
 			this._gbFilesWithoutLinks.Text = "Files Without Links";
+			// 
+			// _lbWritingSystem
+			// 
+			this._lbWritingSystem.AutoSize = true;
+			this._lbWritingSystem.Location = new System.Drawing.Point(37, 67);
+			this._lbWritingSystem.Name = "_lbWritingSystem";
+			this._lbWritingSystem.Size = new System.Drawing.Size(102, 13);
+			this._lbWritingSystem.TabIndex = 3;
+			this._lbWritingSystem.TabStop = true;
+			this._lbWritingSystem.Text = "With Writing System";
+			this._lbWritingSystem.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.WritingSystem_LinkClicked);
+			// 
+			// _cbMoveRemainingOrphanFiles
+			// 
+			this._cbMoveRemainingOrphanFiles.AutoSize = true;
+			this._cbMoveRemainingOrphanFiles.Location = new System.Drawing.Point(16, 91);
+			this._cbMoveRemainingOrphanFiles.Name = "_cbMoveRemainingOrphanFiles";
+			this._cbMoveRemainingOrphanFiles.Size = new System.Drawing.Size(222, 17);
+			this._cbMoveRemainingOrphanFiles.TabIndex = 2;
+			this._cbMoveRemainingOrphanFiles.Text = "Move remaining files to OrphanFiles folder";
+			this._cbMoveRemainingOrphanFiles.UseVisualStyleBackColor = true;
 			// 
 			// _cbInsertLinkFromFile
 			// 
@@ -136,33 +157,14 @@
 			this._cbReportGoodFiles.Text = "Report files found";
 			this._cbReportGoodFiles.UseVisualStyleBackColor = true;
 			// 
-			// _cbMoveRemainingOrphanFiles
+			// _cbWritingSystem
 			// 
-			this._cbMoveRemainingOrphanFiles.AutoSize = true;
-			this._cbMoveRemainingOrphanFiles.Location = new System.Drawing.Point(16, 91);
-			this._cbMoveRemainingOrphanFiles.Name = "_cbMoveRemainingOrphanFiles";
-			this._cbMoveRemainingOrphanFiles.Size = new System.Drawing.Size(222, 17);
-			this._cbMoveRemainingOrphanFiles.TabIndex = 2;
-			this._cbMoveRemainingOrphanFiles.Text = "Move remaining files to OrphanFiles folder";
-			this._cbMoveRemainingOrphanFiles.UseVisualStyleBackColor = true;
-			// 
-			// _lbWritingSystem
-			// 
-			this._lbWritingSystem.AutoSize = true;
-			this._lbWritingSystem.Location = new System.Drawing.Point(37, 67);
-			this._lbWritingSystem.Name = "_lbWritingSystem";
-			this._lbWritingSystem.Size = new System.Drawing.Size(102, 13);
-			this._lbWritingSystem.TabIndex = 3;
-			this._lbWritingSystem.TabStop = true;
-			this._lbWritingSystem.Text = "With Writing System";
-			// 
-			// _comWritingSystem
-			// 
-			this._comWritingSystem.FormattingEnabled = true;
-			this._comWritingSystem.Location = new System.Drawing.Point(145, 64);
-			this._comWritingSystem.Name = "_comWritingSystem";
-			this._comWritingSystem.Size = new System.Drawing.Size(138, 21);
-			this._comWritingSystem.TabIndex = 4;
+			this._cbWritingSystem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._cbWritingSystem.FormattingEnabled = true;
+			this._cbWritingSystem.Location = new System.Drawing.Point(146, 64);
+			this._cbWritingSystem.Name = "_cbWritingSystem";
+			this._cbWritingSystem.Size = new System.Drawing.Size(137, 21);
+			this._cbWritingSystem.TabIndex = 4;
 			// 
 			// AudioFileNamesConfig
 			// 
@@ -195,7 +197,7 @@
         private System.Windows.Forms.CheckBox _cbReportGoodFiles;
 		private System.Windows.Forms.CheckBox _cbMoveRemainingOrphanFiles;
 		private System.Windows.Forms.LinkLabel _lbWritingSystem;
-		private System.Windows.Forms.ComboBox _comWritingSystem;
+		private Palaso.UI.WindowsForms.WritingSystems.WSPickerUsingComboBox _cbWritingSystem;
 
     }
 }
