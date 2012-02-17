@@ -36,6 +36,7 @@ namespace LiftTools
             backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorker1_RunWorkerCompleted);
 
             SetWindowText();
+			NotifyLiftFilePathChange();
         }
 
         void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -110,5 +111,22 @@ namespace LiftTools
         {
             UpdateDisplay();
         }
+
+		private void _liftPathDisplay_TextChanged(object sender, EventArgs e)
+		{
+			NotifyLiftFilePathChange();
+		}
+
+    	private void NotifyLiftFilePathChange()
+    	{
+    		string liftFilePath = _liftPathDisplay.Text;
+    		if (File.Exists(liftFilePath))
+    		{
+    			foreach (Tool tool in _toolChooser.Items)
+    			{
+    				tool.OnLiftFilePathChanged(liftFilePath);
+    			}
+    		}
+    	}
     }
 }

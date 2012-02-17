@@ -14,6 +14,11 @@ namespace LiftTools.Tools
 
         public abstract string InfoPageName { get; }
 
-        public UserControl ConfigControl { get; protected set; }
-    }
+		public virtual void OnLiftFilePathChanged(string liftFilePath)
+		{
+		}
+		
+		public UserControl ConfigControl { get; protected set; }
+
+	}
 }
