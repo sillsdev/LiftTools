@@ -56,13 +56,16 @@ namespace LiftTools.Tools
             CheckEnvironment(inputLiftPath);
     		_config.SetWritingSystemRepository(_writingSystems);
 
-			foreach (var problem in _loadProblems)
+			if (_loadProblems != null)
 			{
-				_progress.WriteMessageWithColor(
-					"red", "Writing System Problem: [{0}] {1}", problem.FilePath, problem.Exception.Message);
+				foreach (var problem in _loadProblems)
+				{
+					_progress.WriteMessageWithColor(
+						"red", "Writing System Problem: [{0}] {1}", problem.FilePath, problem.Exception.Message);
+				}
 			}
 
-            _linkAudit.RunAudit(inputLiftPath, progress);
+    		_linkAudit.RunAudit(inputLiftPath, progress);
 
             var audioFiles = _linkAudit.Links.Where(
                 x => x.Value.Type == LinkAudit.LinkInfo.Types.Audio
