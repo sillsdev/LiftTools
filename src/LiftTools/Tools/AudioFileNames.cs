@@ -7,7 +7,6 @@ using System.Xml;
 using System.Linq;
 using System.Xml.Linq;
 using LiftTools.Tools.Common;
-using Palaso.Code;
 using Palaso.Progress.LogBox;
 using Palaso.WritingSystems;
 using Palaso.WritingSystems.Migration.WritingSystemsLdmlV0To1Migration;
@@ -32,8 +31,7 @@ namespace LiftTools.Tools
 
 		public override void OnLiftFilePathChanged(string liftFilePath)
 		{
-			string projectPath = Path.GetDirectoryName(liftFilePath);
-			string writingSystemPath = Path.Combine(projectPath, "WritingSystems");
+			string writingSystemPath = LiftProjectInfo.WritingSystemPath(liftFilePath);
 			_writingSystems = LdmlInFolderWritingSystemRepository.Initialize(writingSystemPath, OnMigration, OnLoadProblem);
 			_config.SetWritingSystemRepository(_writingSystems);
 		}
@@ -54,7 +52,6 @@ namespace LiftTools.Tools
             _progress = progress;
 
             CheckEnvironment(inputLiftPath);
-    		_config.SetWritingSystemRepository(_writingSystems);
 
 			if (_loadProblems != null)
 			{
@@ -106,7 +103,7 @@ namespace LiftTools.Tools
             		}
             	}
         		
-				string orphanPath = Path.Combine(AudioPath(inputLiftPath), "OrphanFiles");
+				string orphanPath = Path.Combine(LiftProjectInfo.AudioPath(inputLiftPath), "OrphanFiles");
 				foreach (var infoPair in audioFiles.Where(x => x.Value.FileFound && !x.Value.LinkFound))
 				{
 					var info = infoPair.Value;
@@ -116,7 +113,7 @@ namespace LiftTools.Tools
 						{
 							Directory.CreateDirectory(orphanPath);
 						}
-						File.Move(AudioFilePath(inputLiftPath, info.FileName), orphanPath);
+						File.Move(LiftProjectInfo.AudioFilePath(inputLiftPath, info.FileName), orphanPath);
 						_progress.WriteMessage("  MOVED ORPHANED FILE '{0}'", info.FileName);
 					} else
 					{
@@ -185,24 +182,9 @@ namespace LiftTools.Tools
 
         }
 
-        private static string ProjectPath(string liftFilePath)
-        {
-            return Path.GetDirectoryName(liftFilePath);
-        }
-
-        private static string AudioPath(string liftFilePath)
-        {
-            return Path.Combine(ProjectPath(liftFilePath), "audio");
-        }
-
-        private static string AudioFilePath(string liftFilePath, string fileName)
-        {
-            return Path.Combine(AudioPath(liftFilePath), fileName);
-        }
-
         private static void CheckEnvironment(string liftFilePath)
         {
-            string audioPath = AudioPath(liftFilePath);
+			string audioPath = LiftProjectInfo.AudioPath(liftFilePath);
             if (!Directory.Exists(audioPath))
             {
                 throw new ApplicationException(
@@ -213,13 +195,13 @@ namespace LiftTools.Tools
 
         private void FindAudioFile(string liftFilePath, string fileName)
         {
-            string audioFilePath = AudioFilePath(liftFilePath, fileName);
+			string audioFilePath = LiftProjectInfo.AudioFilePath(liftFilePath, fileName);
             if (File.Exists(audioFilePath)) // It really shouldn't if LinkAudit is doing it's job.
             {
                 return;
             }
             // It doesn't exist. See if we can find a file that matches the numeric part of the filename.
-            string audioPath = AudioPath(liftFilePath);
+			string audioPath = LiftProjectInfo.AudioPath(liftFilePath);
             var regex = new Regex(".*-(.*)\\.wav", RegexOptions.IgnoreCase);
             var match = regex.Match(fileName);
             if (!match.Success)
@@ -251,7 +233,7 @@ namespace LiftTools.Tools
             }
         }
 
-        private void ValidateFile(IProgress progress, string path)
+        private static void ValidateFile(IProgress progress, string path)
         {
             progress.WriteMessage(""); 
             progress.WriteMessage("Validating the processed file...");

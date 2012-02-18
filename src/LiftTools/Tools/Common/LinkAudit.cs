@@ -51,8 +51,6 @@ namespace LiftTools.Tools.Common
 
         private IProgress _progress;
 
-        public string LiftFilePath { get; private set; }
-
         public Dictionary<string, LinkInfo> Links { get; private set; }
 
         public void RunAudit(string inputLiftPath, IProgress progress)
@@ -94,38 +92,18 @@ namespace LiftTools.Tools.Common
                     }
                 }
             }
-            CheckFiles(AudioPath(inputLiftPath), LinkInfo.Types.Audio);
-            CheckFiles(ImagePath(inputLiftPath), LinkInfo.Types.Image);
-        }
-
-        private static string ProjectPath(string liftFilePath)
-        {
-            return Path.GetDirectoryName(liftFilePath);
-        }
-
-        private static string AudioPath(string liftFilePath)
-        {
-            return Path.Combine(ProjectPath(liftFilePath), "audio");
-        }
-
-        private static string AudioFilePath(string liftFilePath, string fileName)
-        {
-            return Path.Combine(AudioPath(liftFilePath), fileName);
-        }
-
-        private static string ImagePath(string lifeFilePath)
-        {
-            return Path.Combine(ProjectPath(lifeFilePath), "pictures");
+            CheckFiles(LiftProjectInfo.AudioPath(inputLiftPath), LinkInfo.Types.Audio);
+			CheckFiles(LiftProjectInfo.ImagePath(inputLiftPath), LinkInfo.Types.Image);
         }
 
         private void CheckEnvironment(string liftFilePath)
         {
-            string audioPath = AudioPath(liftFilePath);
+			string audioPath = LiftProjectInfo.AudioPath(liftFilePath);
             if (Directory.Exists(audioPath))
             {
                 _progress.WriteMessage("Audio folder found");
             }
-            string imagePath = ImagePath(liftFilePath);
+			string imagePath = LiftProjectInfo.ImagePath(liftFilePath);
             if (Directory.Exists(imagePath))
             {
                 _progress.WriteMessage("Images folder found");
