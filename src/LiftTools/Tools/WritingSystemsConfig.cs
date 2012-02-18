@@ -14,11 +14,15 @@ namespace LiftTools.Tools
     public partial class WritingSystemsConfig : UserControl
     {
     	private IWritingSystemRepository _repository;
-    	private WritingSystemSetupModel _model;
+		private WritingSystemSetupModel _fromModel;
+		private WritingSystemSetupModel _toModel;
+
+    	private const string _defaultFromRegex = "Some Regular Expression";
 
 		public WritingSystemsConfig()
         {
             InitializeComponent();
+			_tbWritingSystemFrom.Text = _defaultFromRegex;
 			EnableWritingSystemControls(false);
         }
 
@@ -26,14 +30,16 @@ namespace LiftTools.Tools
 		{
         	_tbWritingSystemFrom.Enabled = state;
 			_cbWritingSystemTo.Enabled = state;
-        	_lbWritingSystem.Enabled = false; // Don't allow the dialog up yet CP 2012-02			
+			_lbWritingSystem.Enabled = state; // false; // Don't allow the dialog up yet CP 2012-02			
 		}
 
 		public void SetWritingSystemRepository(IWritingSystemRepository writingSystems)
 		{
 			_repository = writingSystems;
-			_model = new WritingSystemSetupModel(_repository);
-			_cbWritingSystemTo.BindToModel(_model);
+			_fromModel = new WritingSystemSetupModel(_repository);
+			_cbWritingSystemFrom.BindToModel(_fromModel);
+			_toModel = new WritingSystemSetupModel(_repository);
+			_cbWritingSystemTo.BindToModel(_toModel);
 			EnableWritingSystemControls(true);
 		}
 
@@ -52,19 +58,24 @@ namespace LiftTools.Tools
 			get { return _cbDeleteUnusedWritingSystems.Checked; }
     	}
 
+    	public bool DoCopyWhenDone
+    	{
+			get { return _cbCopyWhenDone.Checked; }
+    	}
+
     	public string RenameWritingSystemFrom
     	{
-			get { return _tbWritingSystemFrom.Text; }
+			get { return _tbWritingSystemFrom.Text == _defaultFromRegex ? _fromModel.CurrentRFC4646 : _tbWritingSystemFrom.Text; }
     	}
 
     	public string RenameWritingSystemTo
     	{
-			get { return _model.CurrentRFC4646; }
+			get { return _toModel.CurrentRFC4646; }
     	}
 
 		private void WritingSystem_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			var dlg = new WritingSystemSetupDialog(_model);
+			var dlg = new WritingSystemSetupDialog(_toModel);
 			var result = dlg.ShowDialog();
 			if (result == DialogResult.OK)
 			{

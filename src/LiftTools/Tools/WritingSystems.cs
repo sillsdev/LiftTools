@@ -175,8 +175,13 @@ namespace LiftTools.Tools
 			var langRegex = new Regex(_config.RenameWritingSystemFrom, RegexOptions.IgnoreCase);
 			foreach (var lang in langInUse)
 			{
-				var match = langRegex.Match(lang.FileName);
-				if (!match.Success)
+				bool matched = false;
+				if (!String.IsNullOrEmpty(_config.RenameWritingSystemFrom))
+				{
+					var match = langRegex.Match(lang.FileName);
+					matched = match.Success;
+				}
+				if (!matched)
 				{
 					if (_config.DoReportWritingSystemsInUse)
 					{
@@ -210,6 +215,13 @@ namespace LiftTools.Tools
 						FileUtils.GrepFile(outputLiftPath, search, replace);
 					}
 				}
+				if (_config.DoCopyWhenDone)
+				{
+					File.Copy(outputLiftPath, inputLiftPath, true);
+					_progress.WriteMessageWithColor("blue", "Rescanning after rename...");
+					_writingSystemAudit.RunAudit(inputLiftPath, _writingSystems, _progress);
+					
+				}
 				_progress.WriteMessage("\n");
 			}
 
@@ -231,8 +243,14 @@ namespace LiftTools.Tools
 			}
     		_progress.WriteMessage("\n");
 
-			progress.WriteMessageWithColor("blue", "The processed lift is at " + outputLiftPath);
-			ValidateFile(progress, outputLiftPath);
+			if (_config.DoRename || _config.DoDeleteUnusedLdmlFiles)
+			{
+				progress.WriteMessageWithColor("blue", "The processed lift is at " + outputLiftPath);
+				ValidateFile(progress, outputLiftPath);
+			} else
+			{
+				_progress.WriteMessageWithColor("blue", "Done");
+			}
         }
 
         private static void CheckEnvironment(string liftFilePath)
