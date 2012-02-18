@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
 using System.Linq;
-using System.Xml.Linq;
 using LiftTools.Tools.Common;
+using Palaso.IO;
 using Palaso.Progress.LogBox;
 using Palaso.WritingSystems;
 using Palaso.WritingSystems.Migration.WritingSystemsLdmlV0To1Migration;
-using Palaso.Xml;
 
 namespace LiftTools.Tools
 {
@@ -112,40 +109,6 @@ namespace LiftTools.Tools
 					}
 				}
 			}
-
-			public void LogReport()
-			{
-				_progress.WriteMessage("Writing Systems in data:");
-				foreach (var linkInfoPair in Links)
-				{
-					var linkInfo = linkInfoPair.Value;
-					if (linkInfo.LinkFound)
-					{
-						_progress.WriteMessage("  {0}", linkInfo.FileName);
-					}
-				}
-				_progress.WriteMessage("\n");
-
-				_progress.WriteMessage("Writing Systems in data with no LDML:");
-				foreach (var linkInfoPair in Links)
-				{
-					var linkInfo = linkInfoPair.Value;
-					if (linkInfo.LinkFound && !linkInfo.FileFound)
-					{
-						_progress.WriteMessage("  {0}", linkInfo.FileName);
-					}
-				}
-				_progress.WriteMessage("\n");
-				_progress.WriteMessage("Unused Writing Systems:");
-				foreach (var linkInfoPair in Links)
-				{
-					var linkInfo = linkInfoPair.Value;
-					if (!linkInfo.LinkFound && linkInfo.FileFound)
-					{
-						_progress.WriteMessage("  {0}", linkInfo.FileName);
-					}
-				}
-			}
 		}
 
         private WritingSystemAudit _writingSystemAudit;
@@ -195,11 +158,81 @@ namespace LiftTools.Tools
 			}
 
     		_writingSystemAudit.RunAudit(inputLiftPath, _writingSystems, progress);
-			_writingSystemAudit.LogReport();
+			//_writingSystemAudit.LogReport();
 
-			progress.WriteMessageWithColor("blue", "DONE");
-			//progress.WriteMessageWithColor("blue", "The processed lift is at " + outputLiftPath);
-			//ValidateFile(progress, outputLiftPath);
+			if (_config.DoRename)
+			{
+				File.Copy(inputLiftPath, outputLiftPath, true);
+			}
+
+			// Report on languages in use, and possible renames
+    		_progress.WriteMessageWithColor("blue", "Writing Systems in use:");
+			var langInUse = from info in _writingSystemAudit.Links
+    		                where info.Value.LinkFound 
+    		                select info.Value;
+
+    		var langToRename = new List<string>();
+			var langRegex = new Regex(_config.RenameWritingSystemFrom, RegexOptions.IgnoreCase);
+			foreach (var lang in langInUse)
+			{
+				var match = langRegex.Match(lang.FileName);
+				if (!match.Success)
+				{
+					if (_config.DoReportWritingSystemsInUse)
+					{
+						_progress.WriteMessage("  {0}", lang.FileName);
+					}
+				}
+				else
+				{
+					langToRename.Add(lang.FileName);
+					_progress.WriteMessage(
+						_config.DoRename ? "  {0} RENAME TO {1}" : "  {0} COULD RENAME TO {1}", lang.FileName, _config.RenameWritingSystemTo
+					);
+				}
+			}
+    		_progress.WriteMessage("\n");
+
+			// Report and / or do renames);
+			if (_config.DoRename)
+			{
+				_progress.WriteMessageWithColor("blue", "Renaming Writing Systems:");
+				if (String.IsNullOrEmpty(_config.RenameWritingSystemTo))
+				{
+					_progress.WriteMessageWithColor("red", "Warning: Replacement 'To' Writing System not set.");
+				} else
+				{
+					foreach (var lang in langToRename)
+					{
+						_progress.WriteMessage("Renaming {0} to {1}...", lang, _config.RenameWritingSystemTo);
+						string search = String.Format("lang=\"{0}\"", lang);
+						string replace = String.Format("lang=\"{0}\"", _config.RenameWritingSystemTo);
+						FileUtils.GrepFile(outputLiftPath, search, replace);
+					}
+				}
+				_progress.WriteMessage("\n");
+			}
+
+			// Report and / or delete unused LDML files
+			_progress.WriteMessageWithColor("blue", "Unused Writing Systems:");
+    		var unusedWritingSystems = from info in _writingSystemAudit.Links
+    		                           where !info.Value.LinkFound && info.Value.FileFound
+    		                           select info.Value;
+			foreach (var lang in unusedWritingSystems)
+			{
+				if (_config.DoDeleteUnusedLdmlFiles)
+				{
+					_writingSystems.Remove(lang.FileName);
+					_progress.WriteMessage("  {0} DELETED", lang.FileName);
+				} else
+				{
+					_progress.WriteMessage("  {0}", lang.FileName);
+				}
+			}
+    		_progress.WriteMessage("\n");
+
+			progress.WriteMessageWithColor("blue", "The processed lift is at " + outputLiftPath);
+			ValidateFile(progress, outputLiftPath);
         }
 
         private static void CheckEnvironment(string liftFilePath)
@@ -213,7 +246,7 @@ namespace LiftTools.Tools
             }
         }
 
-        private void ValidateFile(IProgress progress, string path)
+        private static void ValidateFile(IProgress progress, string path)
         {
             progress.WriteMessage(""); 
             progress.WriteMessage("Validating the processed file...");
