@@ -16,18 +16,16 @@ namespace LiftTools.Tools
     	private IWritingSystemRepository _repository;
     	private WritingSystemSetupModel _model;
 
-    	private WindowsFormsSynchronizationContext _sc;
-
 		public WritingSystemsConfig()
         {
-			_sc = new WindowsFormsSynchronizationContext();
             InitializeComponent();
 			EnableWritingSystemControls(false);
         }
 
 		private void EnableWritingSystemControls(bool state)
 		{
-        	_cbWritingSystemFrom.Enabled = state;
+        	_tbWritingSystemFrom.Enabled = state;
+			_cbWritingSystemTo.Enabled = state;
         	_lbWritingSystem.Enabled = false; // Don't allow the dialog up yet CP 2012-02			
 		}
 
@@ -35,7 +33,7 @@ namespace LiftTools.Tools
 		{
 			_repository = writingSystems;
 			_model = new WritingSystemSetupModel(_repository);
-			_cbWritingSystemFrom.BindToModel(_model);
+			_cbWritingSystemTo.BindToModel(_model);
 			EnableWritingSystemControls(true);
 		}
 
@@ -55,6 +53,11 @@ namespace LiftTools.Tools
     	}
 
     	public string RenameWritingSystemFrom
+    	{
+			get { return _tbWritingSystemFrom.Text; }
+    	}
+
+    	public string RenameWritingSystemTo
     	{
 			get { return _model.CurrentRFC4646; }
     	}

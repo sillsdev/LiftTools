@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
 			this._gbWritingSystems = new System.Windows.Forms.GroupBox();
-			this._cbWritingSystemFrom = new Palaso.UI.WindowsForms.WritingSystems.WSPickerUsingComboBox();
 			this._lbWritingSystem = new System.Windows.Forms.LinkLabel();
 			this._cbDeleteUnusedWritingSystems = new System.Windows.Forms.CheckBox();
 			this._cbDoRename = new System.Windows.Forms.CheckBox();
@@ -37,15 +36,16 @@
 			this._lbFrom = new System.Windows.Forms.Label();
 			this._lbTo = new System.Windows.Forms.Label();
 			this._cbWritingSystemTo = new Palaso.UI.WindowsForms.WritingSystems.WSPickerUsingComboBox();
+			this._tbWritingSystemFrom = new System.Windows.Forms.TextBox();
 			this._gbWritingSystems.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// _gbWritingSystems
 			// 
+			this._gbWritingSystems.Controls.Add(this._tbWritingSystemFrom);
 			this._gbWritingSystems.Controls.Add(this._lbTo);
 			this._gbWritingSystems.Controls.Add(this._lbFrom);
 			this._gbWritingSystems.Controls.Add(this._cbWritingSystemTo);
-			this._gbWritingSystems.Controls.Add(this._cbWritingSystemFrom);
 			this._gbWritingSystems.Controls.Add(this._lbWritingSystem);
 			this._gbWritingSystems.Controls.Add(this._cbDeleteUnusedWritingSystems);
 			this._gbWritingSystems.Controls.Add(this._cbDoRename);
@@ -56,15 +56,6 @@
 			this._gbWritingSystems.TabIndex = 2;
 			this._gbWritingSystems.TabStop = false;
 			this._gbWritingSystems.Text = "Writing Systems";
-			// 
-			// _cbWritingSystemFrom
-			// 
-			this._cbWritingSystemFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this._cbWritingSystemFrom.FormattingEnabled = true;
-			this._cbWritingSystemFrom.Location = new System.Drawing.Point(71, 64);
-			this._cbWritingSystemFrom.Name = "_cbWritingSystemFrom";
-			this._cbWritingSystemFrom.Size = new System.Drawing.Size(212, 21);
-			this._cbWritingSystemFrom.TabIndex = 4;
 			// 
 			// _lbWritingSystem
 			// 
@@ -137,6 +128,14 @@
 			this._cbWritingSystemTo.Size = new System.Drawing.Size(212, 21);
 			this._cbWritingSystemTo.TabIndex = 4;
 			// 
+			// _tbWritingSystemFrom
+			// 
+			this._tbWritingSystemFrom.Location = new System.Drawing.Point(71, 64);
+			this._tbWritingSystemFrom.Name = "_tbWritingSystemFrom";
+			this._tbWritingSystemFrom.Size = new System.Drawing.Size(212, 20);
+			this._tbWritingSystemFrom.TabIndex = 7;
+			this._tbWritingSystemFrom.Text = "Some Regular Expression";
+			// 
 			// WritingSystemsConfig
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,10 +156,10 @@
 		private System.Windows.Forms.CheckBox _cbDoRename;
 		private System.Windows.Forms.CheckBox _cbDeleteUnusedWritingSystems;
 		private System.Windows.Forms.LinkLabel _lbWritingSystem;
-		private Palaso.UI.WindowsForms.WritingSystems.WSPickerUsingComboBox _cbWritingSystemFrom;
 		private System.Windows.Forms.Label _lbTo;
 		private System.Windows.Forms.Label _lbFrom;
 		private Palaso.UI.WindowsForms.WritingSystems.WSPickerUsingComboBox _cbWritingSystemTo;
+		private System.Windows.Forms.TextBox _tbWritingSystemFrom;
 
     }
 }
