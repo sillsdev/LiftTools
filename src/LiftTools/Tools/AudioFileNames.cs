@@ -113,8 +113,22 @@ namespace LiftTools.Tools
 						{
 							Directory.CreateDirectory(orphanPath);
 						}
-						File.Move(LiftProjectInfo.AudioFilePath(inputLiftPath, info.FileName), orphanPath);
-						_progress.WriteMessage("  MOVED ORPHANED FILE '{0}'", info.FileName);
+						string audioFilePath = LiftProjectInfo.AudioFilePath(inputLiftPath, info.FileName);
+						string orphanFilePath = Path.Combine(orphanPath, info.FileName);
+						try
+						{
+							File.Move(audioFilePath, orphanFilePath);
+							_progress.WriteMessage("  MOVED ORPHANED FILE '{0}'", info.FileName);
+						}
+						catch (IOException e)
+						{
+							_progress.WriteMessageWithColor(
+								"red", 
+								"  Could not move '{0}' because: {1}", 
+								info.FileName, 
+								e.Message
+							);
+						}
 					} else
 					{
 						_progress.WriteMessage("  ORPHANED FILE '{0}'", info.FileName);
