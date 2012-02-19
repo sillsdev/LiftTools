@@ -25,6 +25,7 @@ namespace LiftTools
                                                          new Validator(),
                                                          new AudioFileNames(),
 														 new WritingSystems(),
+														 new Cawl(),
                                                          new OrphanFiles()
                                                      })));
             Settings.Default.Save();
