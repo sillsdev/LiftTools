@@ -92,6 +92,13 @@
     </Compile>
     <Compile Include="Tools\Common\LinkAudit.cs" />
     <Compile Include="Tools\Common\LiftProjectInfo.cs" />
+    <Compile Include="Tools\Cawl.cs" />
+    <Compile Include="Tools\CawlConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\CawlConfig.Designer.cs">
+      <DependentUpon>CawlConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\WritingSystems.cs" />
     <Compile Include="Tools\WritingSystemsConfig.cs">
       <SubType>UserControl</SubType>
@@ -127,6 +134,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\AudioFileNamesConfig.resx">
       <DependentUpon>AudioFileNamesConfig.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\CawlConfig.resx">
+      <DependentUpon>CawlConfig.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\WritingSystemsConfig.resx">
