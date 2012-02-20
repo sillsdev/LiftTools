@@ -63,10 +63,18 @@ namespace LiftTools.Tools
 
             CheckEnvironment();
 
+            var formsToRemove = _config.CawlWritingSystemsToRemove();
+
+    	    string fileName = Path.GetFileName(inputLiftPath);
+            _progress.WriteMessageWithColor("blue", "Removing the following forms from '{0}'", fileName);
+            foreach (var form in formsToRemove)
+            {
+                _progress.WriteMessage("  {0}", form);
+            }
+
             using (var xmlReader = XmlReader.Create(new StreamReader(inputLiftPath, Encoding.UTF8)))
             using (var xmlWriter = XmlWriter.Create(new StreamWriter(outputLiftPath, false, Encoding.UTF8), CanonicalXmlSettings.CreateXmlWriterSettings()))
             {
-			    var formsToRemove = _config.CawlWritingSystemsToRemove();
                 while (xmlReader.Read())
                 {
                     if (xmlReader.NodeType == XmlNodeType.Element && xmlReader.LocalName == "entry")
