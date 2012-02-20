@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace LiftTools.Tools
@@ -15,28 +16,28 @@ namespace LiftTools.Tools
             InitializeComponent();
         }
 
-        public bool DoReportWritingSystemsInUse
-        {
-            get { return _cbReportWritingSystemsInUse.Checked; }
-        }
-
     	public bool DoDeleteCawlEntries
     	{
 			get { return _cbDeleteCawlEntries.Checked; }
     	}
+
+        public IEnumerable<string> CawlWritingSystemsToRemove()
+        {
+            var result = from object item in _clbCawlWritingSystems.CheckedItems
+                         select item as string;
+            return result.ToList();
+        }
 
 		private void OnCawlFileChooser_Click(object sender, EventArgs e)
 		{
 			var result = _dlgCawlFileChooser.ShowDialog();
 			if (result == DialogResult.OK)
 			{
-				CawlFilePath = _dlgCawlFileChooser.FileName;
-				_presenter.OnCawlFilePathChanged();
+				_presenter.OnCawlFilePathChanged(_dlgCawlFileChooser.FileName);
 			}
 
 		}
 
-    	public string CawlFilePath { get; private set; }
     	public void SetCawlWritingSystems(IEnumerable<string> result)
     	{
 			_clbCawlWritingSystems.Items.Clear();
