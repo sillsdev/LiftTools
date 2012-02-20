@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using Palaso.Progress.LogBox;
+using Palaso.Xml;
 
 namespace LiftTools.Tools
 {
@@ -15,10 +16,11 @@ namespace LiftTools.Tools
 		public interface IConfigView
 		{
 			UserControl Control { get; }
-			string CawlFilePath { get; }
-			void SetCawlWritingSystems(IEnumerable<string> result);
+		    bool DoDeleteCawlEntries { get; }
+		    void SetCawlWritingSystems(IEnumerable<string> result);
 			void SetDefaultCawlFilePath(string defaultCawlFilePath);
 			void SetTextCawlFilePath(string cawlFilePath);
+		    IEnumerable<string> CawlWritingSystemsToRemove();
 		}
 
         private IProgress _progress;
@@ -29,10 +31,20 @@ namespace LiftTools.Tools
         {
             _config = new CawlConfig(this);
             ConfigControl = _config.Control;
-			_config.SetDefaultCawlFilePath(defaultCawlFilePath);
+			SetDefaultCawlFilePath();
         }
 
-    	public string defaultCawlFilePath
+        private void SetDefaultCawlFilePath()
+        {
+            string defaultCawlFilePath = DefaultCawlFilePath;
+            _config.SetDefaultCawlFilePath(defaultCawlFilePath);
+            if (File.Exists(defaultCawlFilePath))
+            {
+                OnCawlFilePathChanged(defaultCawlFilePath);
+            }
+        }
+
+        public string DefaultCawlFilePath
     	{
     		get
     		{
@@ -51,15 +63,53 @@ namespace LiftTools.Tools
 
             CheckEnvironment();
 
-			using (var readStream = new StreamReader(inputLiftPath, Encoding.UTF8))
-			using (var writeStream = new StreamWriter(outputLiftPath, false, Encoding.UTF8))
-			{
-				var xmlReader = XmlReader.Create(readStream);
-				var xmlWriter = XmlWriter.Create(writeStream, Palaso.Xml.CanonicalXmlSettings.CreateXmlWriterSettings());
-				// TODO read and write same, checking for gloss / definition along the way
+            using (var xmlReader = XmlReader.Create(new StreamReader(inputLiftPath, Encoding.UTF8)))
+            using (var xmlWriter = XmlWriter.Create(new StreamWriter(outputLiftPath, false, Encoding.UTF8), CanonicalXmlSettings.CreateXmlWriterSettings()))
+            {
+			    var formsToRemove = _config.CawlWritingSystemsToRemove();
+                while (xmlReader.Read())
+                {
+                    if (xmlReader.NodeType == XmlNodeType.Element && xmlReader.LocalName == "entry")
+                    {
+                        var nodeReader = xmlReader.ReadSubtree();
+                        nodeReader.Read(); // The initial read
+                        try
+                        {
+                            var entryNode = XNode.ReadFrom(nodeReader) as XElement;
+                            var definitionsToRemove = from node in entryNode.Descendants("form")
+                                                      where
+                                                          node.Attributes("lang").Any(
+                                                              a => formsToRemove.Contains(a.Value)
+                                                          )
+                                                      select node;
+                            if (_config.DoDeleteCawlEntries)
+                            {
+                                definitionsToRemove.Remove();
+                            }
+                            var glossesToRemove = from node in entryNode.Descendants("gloss")
+                                                  where
+                                                      node.Attributes("lang").Any(
+                                                          a => formsToRemove.Contains(a.Value)
+                                                      )
+                                                  select node;
+                            if (_config.DoDeleteCawlEntries)
+                            {
+                                glossesToRemove.Remove();
+                            }
+                            entryNode.WriteTo(xmlWriter);
+                        } catch (Exception e)
+                        {
+                            _progress.WriteMessageWithColor("red", "Couldn't process entry because: {0}", e.Message);
+                        }
+                    }
+                    else
+                    {
+                        xmlWriter.WriteNodeShallow(xmlReader);
+                    }
+                }
 			}
-
-
+            progress.WriteMessageWithColor("blue", "The processed lift is at " + outputLiftPath);
+            ValidateFile(progress, outputLiftPath);
         }
 
         private void CheckEnvironment()
@@ -88,21 +138,23 @@ namespace LiftTools.Tools
             }
         }
 
-    	public void OnCawlFilePathChanged()
+    	public void OnCawlFilePathChanged(string cawlFilePath)
     	{
-    		string cawlFilePath = _config.CawlFilePath;
-    		XDocument doc = XDocument.Load(cawlFilePath);
+    	    CawlFilePath = cawlFilePath;
+    		XDocument doc = XDocument.Load(CawlFilePath);
     		var result = from form in doc.Descendants("form")
     		             group form by form.Attribute("lang").Value into lang
     		             where true
     		             select lang.Key;
 
     		_cawlWritingSystems = result.ToList();
-    		_config.SetTextCawlFilePath(cawlFilePath);
+    		_config.SetTextCawlFilePath(CawlFilePath);
 			_config.SetCawlWritingSystems(_cawlWritingSystems);
-    	} 
-		
-		public override string ToString()
+    	}
+
+        private string CawlFilePath { get; set; }
+
+        public override string ToString()
         {
             return "CAWL Remove Gloss and Definition";
         }
