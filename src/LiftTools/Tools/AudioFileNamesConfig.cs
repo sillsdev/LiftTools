@@ -72,7 +72,12 @@ namespace LiftTools.Tools
 			get { return _model.CurrentRFC4646; }
     	}
 
-		private void WritingSystem_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        public bool DoMoveDuplicates
+        {
+            get { return _cbDoMoveDuplicateFiles.Checked; }
+        }
+
+        private void WritingSystem_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			var dlg = new WritingSystemSetupDialog(_model);
 			var result = dlg.ShowDialog();
