@@ -147,9 +147,13 @@ namespace LiftTools.Tools
                 }
                 _progress.WriteMessage("\n");
             }
-			
-			progress.WriteMessageWithColor("blue", "The processed lift is at " + outputLiftPath);
-			ValidateFile(progress, outputLiftPath);
+
+            if (_config.DoInsertLinkFromFile)
+            {
+                progress.WriteMessageWithColor("blue", "The processed lift is at " + outputLiftPath);
+                ValidateFile(progress, outputLiftPath);
+            }
+            progress.WriteMessageWithColor("blue", "Done");
         }
 
         private void FindWordForFile(XDocument doc, string fileName)
