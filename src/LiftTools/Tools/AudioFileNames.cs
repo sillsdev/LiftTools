@@ -81,61 +81,110 @@ namespace LiftTools.Tools
 
             if (_config.DoFindLinkFromFile)
             {
-            	_progress.WriteMessage("FILE OK and LINK NOT FOUND");
-            	using (var reader = new StreamReader(inputLiftPath))
-            	{
-            		XDocument doc = XDocument.Load(reader);
-            		foreach (var infoPair in audioFiles.Where(x => !x.Value.LinkFound && x.Value.FileFound))
-            		{
-            			var info = infoPair.Value;
-            			FindWordForFile(doc, info.FileName);
-            		}
-            		_progress.WriteMessage("\n");
-            		if (_config.DoInsertLinkFromFile)
-            		{
-            			using (var writer = XmlWriter.Create(
-							new StreamWriter(outputLiftPath, false, Encoding.UTF8),
-            			    CanonicalXmlSettings.CreateXmlWriterSettings()
-						))
-            			{
-            				doc.WriteTo(writer);
-            			}
-            		}
-            	}
-        		
-				string orphanPath = Path.Combine(LiftProjectInfo.AudioPath(inputLiftPath), "OrphanFiles");
-				foreach (var infoPair in audioFiles.Where(x => x.Value.FileFound && !x.Value.LinkFound))
+                _progress.WriteMessage("FILE OK and LINK NOT FOUND");
+                using (var reader = new StreamReader(inputLiftPath))
+                {
+                    XDocument doc = XDocument.Load(reader);
+                    foreach (var infoPair in audioFiles.Where(x => !x.Value.LinkFound && x.Value.FileFound))
+                    {
+                        var info = infoPair.Value;
+                        FindWordForFile(doc, info.FileName);
+                    }
+                    _progress.WriteMessage("\n");
+                    if (_config.DoInsertLinkFromFile)
+                    {
+                        using (var writer = XmlWriter.Create(
+                            new StreamWriter(outputLiftPath, false, Encoding.UTF8),
+                            CanonicalXmlSettings.CreateXmlWriterSettings()
+                            ))
+                        {
+                            doc.WriteTo(writer);
+                        }
+                    }
+                }
+            }
+
+            _progress.WriteMessage("LINK OK, FILE NOT FOUND. LOOK FOR DUPLICATES");
+            // See if the numeric part of the filename exists in the list, in this case the orphan
+            // file is a duplicate and can be safely deleted.
+            var foundFiles = audioFiles.Where(x => x.Value.FileFound && x.Value.LinkFound);
+            foreach (var infoPairDuplicate in audioFiles.Where(x => x.Value.FileFound && !x.Value.LinkFound))
+            {
+                var infoDuplicate = infoPairDuplicate.Value;
+                string[] parts = infoDuplicate.FileName.Split(new[] {'-'}, 2);
+                string[] numericParts = parts[1].Split(new[] {'.'}, 2);
+                string numericPart = numericParts[0];
+                var found = foundFiles.Where(x => x.Value.FileName.Contains(numericPart));
+                foreach (var link in found)
+                {
+                    _progress.WriteMessage(
+                        "  FOUND link for '{0}' it matches '{1}'",
+                        infoDuplicate.FileName,
+                        link.Value.FileName
+                        );
+                    //infoDuplicate.LinkFound = true;
+                    if (_config.DoMoveDuplicates)
+                    {
+                        string duplicatePath = Path.Combine(LiftProjectInfo.AudioPath(inputLiftPath), "DuplicateFiles");
+                        if (!Directory.Exists(duplicatePath))
+                        {
+                            Directory.CreateDirectory(duplicatePath);
+                        }
+                        string audioFilePath = LiftProjectInfo.AudioFilePath(inputLiftPath, infoDuplicate.FileName);
+                        string duplicateFilePath = Path.Combine(duplicatePath, infoDuplicate.FileName);
+                        try
+                        {
+                            File.Move(audioFilePath, duplicateFilePath);
+                            _progress.WriteMessage("    MOVED duplicate file '{0}'", infoDuplicate.FileName);
+                        }
+                        catch (IOException e)
+                        {
+                            _progress.WriteMessageWithColor(
+                                "red",
+                                "    Could not move '{0}' because: {1}",
+                                infoDuplicate.FileName,
+                                e.Message
+                                );
+                        }
+                    }
+                }
+            }
+            _progress.WriteMessage("\n");
+
+    	    // Final orphan file processing
+            _progress.WriteMessage("LINK OK, FILE NOT FOUND. REMAINING ORPHAN FILES");
+            string orphanPath = Path.Combine(LiftProjectInfo.AudioPath(inputLiftPath), "OrphanFiles");
+			foreach (var infoPair in audioFiles.Where(x => x.Value.FileFound && !x.Value.LinkFound))
+			{
+				var info = infoPair.Value;
+				if (_config.DoMoveRemainingFiles)
 				{
-					var info = infoPair.Value;
-					if (_config.DoMoveRemainingFiles)
+					if (!Directory.Exists(orphanPath))
 					{
-						if (!Directory.Exists(orphanPath))
-						{
-							Directory.CreateDirectory(orphanPath);
-						}
-						string audioFilePath = LiftProjectInfo.AudioFilePath(inputLiftPath, info.FileName);
-						string orphanFilePath = Path.Combine(orphanPath, info.FileName);
-						try
-						{
-							File.Move(audioFilePath, orphanFilePath);
-							_progress.WriteMessage("  MOVED ORPHANED FILE '{0}'", info.FileName);
-						}
-						catch (IOException e)
-						{
-							_progress.WriteMessageWithColor(
-								"red", 
-								"  Could not move '{0}' because: {1}", 
-								info.FileName, 
-								e.Message
-							);
-						}
-					} else
-					{
-						_progress.WriteMessage("  ORPHANED FILE '{0}'", info.FileName);
+						Directory.CreateDirectory(orphanPath);
 					}
+					string audioFilePath = LiftProjectInfo.AudioFilePath(inputLiftPath, info.FileName);
+					string orphanFilePath = Path.Combine(orphanPath, info.FileName);
+					try
+					{
+						File.Move(audioFilePath, orphanFilePath);
+						_progress.WriteMessage("  MOVED ORPHANED FILE '{0}'", info.FileName);
+					}
+					catch (IOException e)
+					{
+						_progress.WriteMessageWithColor(
+							"red", 
+							"  Could not move '{0}' because: {1}", 
+							info.FileName, 
+							e.Message
+						);
+					}
+				} else
+				{
+					_progress.WriteMessage("  ORPHANED FILE '{0}'", info.FileName);
 				}
-				_progress.WriteMessage("\n");
 			}
+			_progress.WriteMessage("\n");
 
             if (_config.DoReportGoodFiles)
             {
