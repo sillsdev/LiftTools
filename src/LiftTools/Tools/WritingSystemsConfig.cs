@@ -58,6 +58,11 @@ namespace LiftTools.Tools
 			get { return _cbDeleteUnusedWritingSystems.Checked; }
     	}
 
+        public bool DoCreateMissingWritingSystems
+        {
+            get { return _cbCreateWritingSystems.Checked; }
+        }
+
     	public bool DoCopyWhenDone
     	{
 			get { return _cbCopyWhenDone.Checked; }

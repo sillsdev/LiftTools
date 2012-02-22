@@ -72,7 +72,15 @@ namespace LiftTools.Tools.Common
                     var match = audioRegex.Match(line);
                     if (match.Success)
                     {
-                        Links.Add(match.Groups[1].Value, LinkInfo.CreateFromLink(match.Groups[1].Value, LinkInfo.Types.Audio));
+                        string audioFile = match.Groups[1].Value;
+                        if (!Links.ContainsKey(audioFile))
+                        {
+                            Links.Add(audioFile, LinkInfo.CreateFromLink(audioFile, LinkInfo.Types.Audio));
+                        }
+                        else
+                        {
+                            _progress.WriteMessageWithColor("blue", "Warning: Audio file '{0}' already used.", audioFile);
+                        }
                         continue;
                     }
                     match = imageRegex.Match(line);

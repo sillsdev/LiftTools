@@ -90,17 +90,17 @@ namespace LiftTools.Tools
 					if (repository.Contains(writingSystemInfo.FileName))
 					{
 						writingSystemInfo.FileFound = true;
-					}
-					// Just check the actual file is the same name, which it should be
-					string ldmlFilePath = Path.Combine(
-						LiftProjectInfo.WritingSystemPath(liftFilePath),
-						writingSystemInfo.FileName + ".ldml"
-					);
-					if (!File.Exists(ldmlFilePath))
-					{
-						_progress.WriteMessageWithColor("red", "Writing System in repository '{0}', but file not found", writingSystemInfo.FileName);
-					}
-				}
+					    // Just check the actual file is the same name, which it should be
+					    string ldmlFilePath = Path.Combine(
+						    LiftProjectInfo.WritingSystemPath(liftFilePath),
+						    writingSystemInfo.FileName + ".ldml"
+					    );
+					    if (!File.Exists(ldmlFilePath))
+					    {
+						    _progress.WriteMessageWithColor("red", "Writing System in repository '{0}', but file not found", writingSystemInfo.FileName);
+					    }
+                    }
+                }
 				foreach (var writingSystem in repository.AllWritingSystems)
 				{
 					if (!Links.ContainsKey(writingSystem.Bcp47Tag))
@@ -142,30 +142,47 @@ namespace LiftTools.Tools
     	}
 
     	public override void Run(string inputLiftPath, string outputLiftPath, IProgress progress)
-        {
-            _writingSystemAudit = new WritingSystemAudit();
-            _progress = progress;
+    	{
+    	    _writingSystemAudit = new WritingSystemAudit();
+    	    _progress = progress;
 
-            CheckEnvironment(inputLiftPath);
+    	    CheckEnvironment(inputLiftPath);
 
-			if (_loadProblems != null)
-			{
-				foreach (var problem in _loadProblems)
-				{
-					_progress.WriteMessageWithColor(
-						"red", "Writing System Problem: [{0}] {1}", problem.FilePath, problem.Exception.Message);
-				}
-			}
+    	    if (_loadProblems != null)
+    	    {
+    	        foreach (var problem in _loadProblems)
+    	        {
+    	            _progress.WriteMessageWithColor(
+    	                "red", "Writing System Problem: [{0}] {1}", problem.FilePath, problem.Exception.Message);
+    	        }
+    	    }
 
-    		_writingSystemAudit.RunAudit(inputLiftPath, _writingSystems, progress);
-			//_writingSystemAudit.LogReport();
+    	    _writingSystemAudit.RunAudit(inputLiftPath, _writingSystems, progress);
+    	    //_writingSystemAudit.LogReport();
 
-			if (_config.DoRename)
-			{
-				File.Copy(inputLiftPath, outputLiftPath, true);
-			}
+    	    if (_config.DoRename)
+    	    {
+    	        File.Copy(inputLiftPath, outputLiftPath, true);
+    	    }
 
-			// Report on languages in use, and possible renames
+    	    // Create any missing writing systems.
+    	    var missingWritingSystems = from info in _writingSystemAudit.Links
+    	                                where info.Value.LinkFound && !info.Value.FileFound
+    	                                select info.Value;
+
+    	    if (missingWritingSystems.Count() > 0)
+            {
+                _progress.WriteMessageWithColor("blue", "Creating missing writing systems:");
+                foreach (var lang in missingWritingSystems)
+    	        {
+                    _progress.WriteMessage("  {0}", lang.FileName);
+    	            var ws = WritingSystemDefinition.Parse(lang.FileName);
+    	            _writingSystems.Set(ws);
+    	        }
+    	        _writingSystems.Save();
+    	    }
+
+            // Report on languages in use, and possible renames
     		_progress.WriteMessageWithColor("blue", "Writing Systems in use:");
 			var langInUse = from info in _writingSystemAudit.Links
     		                where info.Value.LinkFound 
