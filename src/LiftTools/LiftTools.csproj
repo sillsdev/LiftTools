@@ -90,6 +90,7 @@
     <Compile Include="Tools\AudioFileNamesConfig.Designer.cs">
       <DependentUpon>AudioFileNamesConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\DuplicatedIdentifiers.cs" />
     <Compile Include="Tools\Common\LinkAudit.cs" />
     <Compile Include="Tools\Common\LiftProjectInfo.cs" />
     <Compile Include="Tools\Cawl.cs" />
