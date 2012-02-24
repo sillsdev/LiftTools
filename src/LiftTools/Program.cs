@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using LiftTools.Properties;
 using LiftTools.Tools;
@@ -26,7 +25,8 @@ namespace LiftTools
                                                          new AudioFileNames(),
 														 new WritingSystems(),
 														 new Cawl(),
-                                                         new OrphanFiles()
+                                                         new OrphanFiles(),
+														 new DuplicatedIdentifiers() 
                                                      })));
             Settings.Default.Save();
         }
