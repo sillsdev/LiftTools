@@ -121,7 +121,7 @@
 			this._tabControl.Location = new System.Drawing.Point(25, 103);
 			this._tabControl.Name = "_tabControl";
 			this._tabControl.SelectedIndex = 0;
-			this._tabControl.Size = new System.Drawing.Size(568, 299);
+			this._tabControl.Size = new System.Drawing.Size(568, 349);
 			this._tabControl.TabIndex = 9;
 			// 
 			// _infoPage
@@ -130,7 +130,7 @@
 			this._infoPage.Location = new System.Drawing.Point(4, 22);
 			this._infoPage.Name = "_infoPage";
 			this._infoPage.Padding = new System.Windows.Forms.Padding(3);
-			this._infoPage.Size = new System.Drawing.Size(560, 273);
+			this._infoPage.Size = new System.Drawing.Size(560, 323);
 			this._infoPage.TabIndex = 0;
 			this._infoPage.Text = "Info";
 			this._infoPage.UseVisualStyleBackColor = true;
@@ -141,7 +141,7 @@
 			this._infoBrowser.Location = new System.Drawing.Point(3, 3);
 			this._infoBrowser.MinimumSize = new System.Drawing.Size(20, 20);
 			this._infoBrowser.Name = "_infoBrowser";
-			this._infoBrowser.Size = new System.Drawing.Size(554, 267);
+			this._infoBrowser.Size = new System.Drawing.Size(554, 317);
 			this._infoBrowser.TabIndex = 0;
 			// 
 			// _logPage
@@ -196,7 +196,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-			this.ClientSize = new System.Drawing.Size(625, 425);
+			this.ClientSize = new System.Drawing.Size(625, 475);
 			this.Controls.Add(this._tabControl);
 			this.Controls.Add(this._liftPathDisplay);
 			this.Controls.Add(this.label3);
