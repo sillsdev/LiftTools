@@ -14,7 +14,9 @@ namespace LiftTools.Tools
         public override void Run(string inputLiftPath, string outputLiftPath, IProgress progress)
         {
             progress.WriteMessage("Checking...");
-            var errors = Palaso.Lift.Validation.Validator.GetAnyValidationErrors(inputLiftPath, ValidationOptions.All);
+        	IValidationProgress validationProgress = new ValidationProgress(progress);
+
+        	var errors = Palaso.Lift.Validation.Validator.GetAnyValidationErrors(inputLiftPath, validationProgress, ValidationOptions.All);
             if(string.IsNullOrEmpty(errors))
             {
                 progress.WriteMessage("No Errors found.");
