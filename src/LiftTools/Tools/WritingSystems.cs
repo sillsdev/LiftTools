@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using LiftTools.Tools.Common;
 using Palaso.IO;
+using Palaso.Lift.Validation;
 using Palaso.Progress.LogBox;
 using Palaso.WritingSystems;
 using Palaso.WritingSystems.Migration.WritingSystemsLdmlV0To1Migration;
@@ -285,7 +286,7 @@ namespace LiftTools.Tools
         {
             progress.WriteMessage(""); 
             progress.WriteMessage("Validating the processed file...");
-			var errors = Palaso.Lift.Validation.Validator.GetAnyValidationErrors(path);
+			var errors = Palaso.Lift.Validation.Validator.GetAnyValidationErrors(path, ValidationOptions.All);
             if (string.IsNullOrEmpty(errors))
             {
                 progress.WriteMessage("No Errors found.");
