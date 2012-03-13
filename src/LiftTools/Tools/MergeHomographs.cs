@@ -66,7 +66,7 @@ namespace LiftTools.Tools
         {
             progress.WriteMessage(""); 
             progress.WriteMessage("Validating the processed file...");
-			var errors = Palaso.Lift.Validation.Validator.GetAnyValidationErrors(path, ValidationOptions.All);
+			var errors = Palaso.Lift.Validation.Validator.GetAnyValidationErrors(path, new ValidationProgress(progress), ValidationOptions.All);
             if (string.IsNullOrEmpty(errors))
             {
                 progress.WriteMessage("No Errors found.");
