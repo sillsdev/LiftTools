@@ -99,6 +99,12 @@
     <Compile Include="Tools\CawlConfig.Designer.cs">
       <DependentUpon>CawlConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\MergeHomographsConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\MergeHomographsConfig.Designer.cs">
+      <DependentUpon>MergeHomographsConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\WritingSystems.cs" />
     <Compile Include="Tools\WritingSystemsConfig.cs">
       <SubType>UserControl</SubType>
@@ -138,6 +144,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\CawlConfig.resx">
       <DependentUpon>CawlConfig.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\MergeHomographsConfig.resx">
+      <DependentUpon>MergeHomographsConfig.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\WritingSystemsConfig.resx">
