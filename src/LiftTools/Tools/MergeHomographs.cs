@@ -111,6 +111,12 @@ namespace LiftTools.Tools
     				}
     			}
     		}
+    		var knownTraits = new[] {"semantic-domain-ddp4"};
+			foreach (var trait in knownTraits.Where(trait => traits.Contains(trait)))
+			{
+				traits.Remove(trait);
+			}
+
     		_config.SetTraits(traits);
     	}
 
