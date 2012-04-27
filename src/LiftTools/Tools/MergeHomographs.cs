@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using Palaso.Code;
-using Palaso.Lift.Validation;
 using Palaso.Progress.LogBox;
 
 namespace LiftTools.Tools
@@ -62,21 +61,6 @@ namespace LiftTools.Tools
             ValidateFile(progress, outputLiftPath);
         }
 
-        private static void ValidateFile(IProgress progress, string path)
-        {
-            progress.WriteMessage(""); 
-            progress.WriteMessage("Validating the processed file...");
-			var errors = Palaso.Lift.Validation.Validator.GetAnyValidationErrors(path, new ValidationProgress(progress), ValidationOptions.All);
-            if (string.IsNullOrEmpty(errors))
-            {
-                progress.WriteMessage("No Errors found.");
-            }
-            else
-            {
-                progress.WriteMessageWithColor("red", errors);
-                progress.WriteMessage("Done");
-            }
-        }
 
 		public override void OnLiftFilePathChanged(string liftFilePath)
 		{
@@ -129,6 +113,5 @@ namespace LiftTools.Tools
         {
             get { return "MergeHomographs.htm"; }
         }
-
     }
 }
