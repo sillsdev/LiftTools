@@ -26,6 +26,7 @@ namespace LiftTools
                                                          new AudioFileNames(),
 														 new WritingSystems(),
 														 new Cawl(),
+														 new SeparateCAWLSensesIntoEntries(),
                                                          new OrphanFiles()
                                                      })));
             Settings.Default.Save();
@@ -33,7 +34,7 @@ namespace LiftTools
 
         private static void SetupErrorHandling()
         {
-            ErrorReport.EmailAddress = "hide@gmail.com".Replace("hide","hattonjohn");
+			ErrorReport.EmailAddress = "issues@hideme.org".Replace("hide", "wesay.palaso");
             ErrorReport.AddStandardProperties();
             ExceptionHandler.Init();
 
