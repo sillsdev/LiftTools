@@ -99,6 +99,7 @@
     <Compile Include="Tools\CawlConfig.Designer.cs">
       <DependentUpon>CawlConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\SeparateCAWLSensesIntoEntries.cs" />
     <Compile Include="Tools\MergeHomographsConfig.cs">
       <SubType>UserControl</SubType>
     </Compile>
