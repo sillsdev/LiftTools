@@ -57,7 +57,7 @@ namespace LiftTools.Tools
 				_progress = progress;
 				Links = new Dictionary<string, LinkInfo>();
 
-				var langRegEx = new Regex(@"lang=""(.*)""", RegexOptions.IgnoreCase);
+				var langRegEx = new Regex(@"lang=""([^""]*)""", RegexOptions.IgnoreCase);
 				using (var reader = new StreamReader(inputLiftPath))
 				{
 					while (!reader.EndOfStream)
