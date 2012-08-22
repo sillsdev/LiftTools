@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using LiftTools.Tools.Common;
 using Palaso.IO;
+using Palaso.Lift;
 using Palaso.Lift.Validation;
 using Palaso.Progress.LogBox;
 using Palaso.WritingSystems;
@@ -14,6 +15,7 @@ namespace LiftTools.Tools
 {
     public class WritingSystems : Tool
     {
+        //This class helps determine which writing systems are in use in a lift file and which exist in the ldml folder (via the RunAudit method)
 		private class WritingSystemAudit
 		{
 			public class LinkInfo
@@ -57,29 +59,11 @@ namespace LiftTools.Tools
 				_progress = progress;
 				Links = new Dictionary<string, LinkInfo>();
 
-				var langRegEx = new Regex(@"lang=""([^""]*)""", RegexOptions.IgnoreCase);
-				using (var reader = new StreamReader(inputLiftPath))
-				{
-					while (!reader.EndOfStream)
-					{
-						string line = reader.ReadLine();
-						if (string.IsNullOrEmpty(line)) continue;
-
-						var match = langRegEx.Match(line);
-						if (match.Success)
-						{
-							string langRef = match.Groups[1].Value;
-							if (!String.IsNullOrEmpty(langRef))
-							{
-								// Images may be used more than once.
-								if (!Links.ContainsKey(langRef))
-								{
-									Links.Add(langRef, LinkInfo.CreateFromLink(langRef));
-								}
-							}
-						}
-					}
-				}
+			    var wsInLiftHelper = new WritingSystemsInLiftFileHelper(repository, inputLiftPath);
+			    foreach (var bcp47Tag in wsInLiftHelper.WritingSystemsInUse)
+			    {
+                    Links.Add(bcp47Tag, LinkInfo.CreateFromLink(bcp47Tag));
+			    }
 				CheckWritingSystems(inputLiftPath, repository);
 			}
 
@@ -171,7 +155,7 @@ namespace LiftTools.Tools
     	                                where info.Value.LinkFound && !info.Value.FileFound
     	                                select info.Value;
 
-    	    if (missingWritingSystems.Count() > 0)
+    	    if (missingWritingSystems.Any())
             {
                 _progress.WriteMessageWithColor("blue", "Creating missing writing systems:");
                 foreach (var lang in missingWritingSystems)
@@ -225,12 +209,11 @@ namespace LiftTools.Tools
 					_progress.WriteMessageWithColor("red", "Warning: Replacement 'To' Writing System not set.");
 				} else
 				{
+				    var wsInLiftRenameHalper = new WritingSystemsInLiftFileHelper(_writingSystems, outputLiftPath);
 					foreach (var lang in langToRename)
 					{
 						_progress.WriteMessage("Renaming {0} to {1}...", lang, _config.RenameWritingSystemTo);
-						string search = String.Format("lang=\"{0}\"", lang);
-						string replace = String.Format("lang=\"{0}\"", _config.RenameWritingSystemTo);
-						FileUtils.GrepFile(outputLiftPath, search, replace);
+					    wsInLiftRenameHalper.ReplaceWritingSystemId(lang, _config.RenameWritingSystemTo);
 					}
 				}
 				if (_config.DoCopyWhenDone)
