@@ -8,7 +8,7 @@ using System.Linq;
 using System.Xml.Linq;
 using LiftTools.Tools.Common;
 using Palaso.Lift.Validation;
-using Palaso.Progress.LogBox;
+using Palaso.Progress;
 using Palaso.WritingSystems;
 using Palaso.WritingSystems.Migration.WritingSystemsLdmlV0To1Migration;
 using Palaso.Xml;
