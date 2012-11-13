@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using Palaso.Progress.LogBox;
+using Palaso.Progress;
 
 namespace LiftTools.Tools.Common
 {

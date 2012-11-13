@@ -7,7 +7,7 @@ using LiftTools.Tools.Common;
 using Palaso.IO;
 using Palaso.Lift;
 using Palaso.Lift.Validation;
-using Palaso.Progress.LogBox;
+using Palaso.Progress;
 using Palaso.WritingSystems;
 using Palaso.WritingSystems.Migration.WritingSystemsLdmlV0To1Migration;
 

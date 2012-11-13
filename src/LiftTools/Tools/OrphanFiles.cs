@@ -7,7 +7,7 @@ using System.Xml;
 using LiftTools.Tools.Common;
 using Palaso.Code;
 using Palaso.Lift.Validation;
-using Palaso.Progress.LogBox;
+using Palaso.Progress;
 
 namespace LiftTools.Tools
 {

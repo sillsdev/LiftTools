@@ -1,6 +1,6 @@
 ﻿using System;
 using Palaso.Lift.Validation;
-using Palaso.Progress.LogBox;
+using Palaso.Progress;
 
 namespace LiftTools.Tools
 {

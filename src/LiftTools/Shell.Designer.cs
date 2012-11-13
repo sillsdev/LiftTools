@@ -42,7 +42,7 @@
 			this._infoPage = new System.Windows.Forms.TabPage();
 			this._infoBrowser = new System.Windows.Forms.WebBrowser();
 			this._logPage = new System.Windows.Forms.TabPage();
-			this._logBox = new Palaso.Progress.LogBox.LogBox();
+			this._logBox = new Palaso.UI.WindowsForms.Progress.LogBox();
 			this._configPage = new System.Windows.Forms.TabPage();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this._tabControl.SuspendLayout();
@@ -227,7 +227,7 @@
         private System.Windows.Forms.TabControl _tabControl;
         private System.Windows.Forms.TabPage _infoPage;
         private System.Windows.Forms.TabPage _logPage;
-        private Palaso.Progress.LogBox.LogBox _logBox;
+        private Palaso.UI.WindowsForms.Progress.LogBox _logBox;
         private System.Windows.Forms.WebBrowser _infoBrowser;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TabPage _configPage;
