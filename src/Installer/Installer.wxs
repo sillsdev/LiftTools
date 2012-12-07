@@ -109,6 +109,9 @@ are trying to support, you're better off using non-advertised shortcuts. "-->
           <Component Id="icuuc40.dll" Guid="{5750DD1D-F389-4138-9DEB-9CCC6C7720F3}">
             <File Id="icuuc40.dll" Name="icuuc40.dll" KeyPath="yes" Source="..\..\lib\icuuc40.dll" />
           </Component>
+          <Component Id="Enchant.Net.dll" Guid="{a3212e03-4462-4d52-99c0-7d722b2f7030}">
+            <File Id="Enchant.Net.dll" Name="Enchant.Net.dll" KeyPath="yes" Source="..\..\lib\Enchant.Net.dll" />
+          </Component>
           
           <Component Id="Palaso.DictionaryServices.dll" Guid="{79EE8237-9614-4239-87A4-B2AF2CF7CD2C}">
             <File Id="Palaso.DictionaryServices.dll" Name="Palaso.DictionaryServices.dll" KeyPath="yes" Source="..\..\output\release\Palaso.DictionaryServices.dll" />
@@ -143,6 +146,7 @@ are trying to support, you're better off using non-advertised shortcuts. "-->
       <ComponentRef Id="icudt40.dll"/>
       <ComponentRef Id="icuin40.dll"/>
       <ComponentRef Id="icuuc40.dll"/>
+      <ComponentRef Id="Enchant.Net.dll"/>
 
       <ComponentGroupRef Id ="DistFiles"/>
  
