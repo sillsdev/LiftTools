@@ -80,12 +80,13 @@ namespace LiftTools.Tools
 
 		private void WritingSystem_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			var dlg = new WritingSystemSetupDialog(_toModel);
-			var result = dlg.ShowDialog();
-			if (result == DialogResult.OK)
-			{
-				_repository.Save();
-			}
+			using(var dlg = new WritingSystemSetupDialog(_toModel)){
+			    var result = dlg.ShowDialog();
+			    if (result == DialogResult.OK)
+			    {
+				    _repository.Save();
+			    }
+            }
 		}
 
     }
