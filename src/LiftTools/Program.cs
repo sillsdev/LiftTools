@@ -34,7 +34,7 @@ namespace LiftTools
 
         private static void SetupErrorHandling()
         {
-			ErrorReport.EmailAddress = "issues@hideme.org".Replace("hide", "wesay.palaso");
+			ErrorReport.EmailAddress = "issues@hideme.org".Replace("hideme", "wesay.palaso");
             ErrorReport.AddStandardProperties();
             ExceptionHandler.Init();
 
